@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6375a251-3b8c-4c61-8c84-4c7bb4909492">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="moduleName" class="java.lang.String"/>
+	<parameter name="moduleID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     serviceorderresumen_resolved.`id` AS serviceorderresumen_resolved_id,
+     serviceorderresumen_resolved.`titemNumber` AS serviceorderresumen_resolved_titemNumber,
+     serviceorderresumen_resolved.`titemMake` AS serviceorderresumen_resolved_titemMake,
+     serviceorderresumen_resolved.`titemModel` AS serviceorderresumen_resolved_titemModel,
+     serviceorderresumen_resolved.`titemSerie` AS serviceorderresumen_resolved_titemSerie,
+     serviceorderresumen_resolved.`horometro` AS serviceorderresumen_resolved_horometro,
+     serviceorderresumen_resolved.`fhService` AS serviceorderresumen_resolved_fhService,
+     serviceorderresumen_resolved.`compNumber` AS serviceorderresumen_resolved_compNumber,
+     serviceorderresumen_resolved.`compName` AS serviceorderresumen_resolved_compName
+FROM
+     `serviceorderresumen_resolved` serviceorderresumen_resolved
+WHERE
+      module = $P{moduleID}]]>
+	</queryString>
+	<field name="serviceorderresumen_resolved_titemNumber" class="java.lang.String"/>
+	<field name="serviceorderresumen_resolved_titemMake" class="java.lang.String"/>
+	<field name="serviceorderresumen_resolved_titemModel" class="java.lang.String"/>
+	<field name="serviceorderresumen_resolved_titemSerie" class="java.lang.String"/>
+	<field name="serviceorderresumen_resolved_horometro" class="java.lang.Integer"/>
+	<field name="serviceorderresumen_resolved_fhService" class="java.sql.Date"/>
+	<field name="serviceorderresumen_resolved_compNumber" class="java.lang.String"/>
+	<field name="serviceorderresumen_resolved_compName" class="java.lang.String"/>
+	<group name="serviceorderresumen_resolved_compName">
+		<groupExpression><![CDATA[$F{serviceorderresumen_resolved_compName}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField>
+					<reportElement style="SubTitle" x="47" y="13" width="506" height="24" forecolor="#CC9900" uuid="09b84063-a96f-475d-905c-bfc8aa2e0e43"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{serviceorderresumen_resolved_compName}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="13" width="36" height="24" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="78da552e-53e6-4fed-bf21-d2bf96470bc0"/>
+				</rectangle>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="225" height="33" uuid="a973dc16-722a-46be-b7b1-b12bb0e4602c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Reporte de Horómetros]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="46" width="225" height="25" forecolor="#666666" uuid="f7f174f4-c7c8-48b6-b33b-545acb1cd9be"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{moduleName}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="395" y="0" width="158" height="71" uuid="165edbf1-6fbc-4230-8e42-0591c01d0e49"/>
+				<imageExpression><![CDATA["LogoFull.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="2f2b54d9-7157-45cb-9392-384cda27727f"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="79" height="15" uuid="22c6e97c-94da-4377-a300-46fc50a4aca4"/>
+				<text><![CDATA[Número]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="79" y="19" width="79" height="15" uuid="82058213-d69f-40ce-9fdd-a95c2c202bab"/>
+				<text><![CDATA[Marca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="158" y="19" width="79" height="15" uuid="5ddbe281-1341-4f21-bdc9-7762302447af"/>
+				<text><![CDATA[Modelo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="237" y="19" width="79" height="15" uuid="ffe62196-7db0-414d-a4fb-358ee4860415"/>
+				<text><![CDATA[Serie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="316" y="19" width="117" height="15" uuid="e0fd92e7-19a8-44cd-b695-810223124e1b"/>
+				<text><![CDATA[Horómetro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="433" y="19" width="120" height="15" uuid="3c70f449-5381-4bf8-a417-0c47a514332e"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="9cb1f7df-c74c-40a4-808c-719931a6beec"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="79" height="15" uuid="b3dcc8f6-d2bc-490a-98c3-1156443adef4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serviceorderresumen_resolved_titemNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="79" y="0" width="79" height="15" uuid="c43774f4-04be-4b45-baf5-0ed80c2f1617"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serviceorderresumen_resolved_titemMake}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="158" y="0" width="79" height="15" uuid="4ea3785e-017a-4891-a78b-1cd14e0a9325"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serviceorderresumen_resolved_titemModel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="237" y="0" width="79" height="15" uuid="519171c6-aa2b-46b6-9a20-4b457fef1ec6"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serviceorderresumen_resolved_titemSerie}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="316" y="0" width="117" height="15" uuid="34a7ff24-bab5-460e-8093-8baf4da4099d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serviceorderresumen_resolved_horometro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement style="Detail" x="433" y="0" width="120" height="15" uuid="73e3bc1d-86ec-4040-8ba3-9dc352583daf"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serviceorderresumen_resolved_fhService}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="e669ce30-2ecf-42b2-8595-54fcfc3f5162"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="80384273-d1c1-4b96-b3c7-c82dee651aee"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="0403c4d4-47b3-4205-a3c4-38926fac3c67"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="2abe1ba9-6764-49a5-99cf-f7093cd048c0"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
