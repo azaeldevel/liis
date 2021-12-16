@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<exe4j version="8.0" transformSequenceNumber="3">
+  <directoryPresets config="C:/Users/Azael/Documents/Proyectos/SIIL/trunk/build/src" />
+  <application name="SIIL Tool" distributionSourceDir="src/release" />
+  <executable name="tool" wrapperType="embed" iconSet="true" iconFile="src/release/tool.ico" executableDir="." executableMode="gui" dpiAware="false" amd64="false" />
+  <java mainClass="SIIL.servApp" vmParameters="-Djava.security.auth.login.config=config.jaas" minVersion="1.8" allowBetaVM="true">
+    <classPath>
+      <archive location="desk.jar" failOnError="false" />
+    </classPath>
+  </java>
+</exe4j>
