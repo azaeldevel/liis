@@ -1,0 +1,11 @@
+src/miniCore/target/*
+src/Core/target/*
+src/desktop/target/*
+*.csv
+build/vers/*
+build/src/release/*.jar
+build/src/release/*.exe
+src/desktop/*.csv
+MySQL/r/*-bk.sql
+MySQL/r/*.bak
+build/vers/md5sums

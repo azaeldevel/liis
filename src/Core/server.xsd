@@ -1,0 +1,70 @@
+<?xml version = "1.0"?>
+<xs:schema xmlns:xs = "http://www.w3.org/2001/XMLSchema">
+<xs:element name = 'configuration'>
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name = 'mysql' minOccurs = '1' maxOccurs = '1'/>
+			<xs:element name = 'speech' minOccurs = '1' maxOccurs = '1'/>
+			<xs:element name = 'ftp' minOccurs = '1' maxOccurs = '1'/>
+			<xs:element name = 'workspace' minOccurs = '1' maxOccurs = '1'/>
+			<xs:element name = 'diversa' minOccurs = '1' maxOccurs = '1'/>
+			<xs:element name = 'comercial' minOccurs = '1' maxOccurs = '1'/>
+			<xs:element name = 'phase' minOccurs = '1' maxOccurs = '1'/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+   
+	<xs:complexType name = "mysql">
+		<xs:sequence>
+			 <xs:element name = "host" type = "xs:string"/>
+			 <xs:element name = "port" type = "xs:string"/>
+			 <xs:element name = "user" type = "xs:string"/>
+			 <xs:element name = "code" type = "xs:string"/>
+			 <xs:element name = "database" type = "xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+   
+	<xs:complexType name = "speech">
+      <xs:sequence>
+         <xs:element name = "host" type = "xs:string"/>
+         <xs:element name = "port" type = "xs:string"/>
+      </xs:sequence>
+   </xs:complexType>
+   
+	<xs:complexType name = "ftp">
+      <xs:sequence>
+         <xs:element name = "host" type = "xs:string"/>
+         <xs:element name = "user" type = "xs:string"/>
+         <xs:element name = "code" type = "xs:string"/>
+         <xs:element name = "port" type = "xs:string"/>
+         <xs:element name = "base" type = "xs:string"/>
+      </xs:sequence>
+   </xs:complexType>
+   
+	<xs:complexType name = "workspace">
+      <xs:sequence>
+         <xs:element name = "failmail" type = "xs:string"/>
+      </xs:sequence>
+   </xs:complexType>
+   
+	<xs:complexType name = "diversa">
+		<xs:sequence>
+			<xs:element name = "token" type = "xs:string"/>
+			<xs:element name = "prefixFile" type = "xs:string"/>
+			<xs:element name = "code" type = "xs:string"/>
+			<xs:element name = "cancelService" type = "xs:string"/>
+			<xs:element name = "stampService" type = "xs:string"/>
+			<xs:element name = "cancelService33" type = "xs:string"/>
+			<xs:element name = "stampService33" type = "xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name = "comercial">
+		<xs:sequence>
+			<xs:element name = "user" type = "xs:string"/>
+			<xs:element name = "code" type = "xs:string"/>
+			<xs:element name = "serverName" type = "xs:string"/>
+			<xs:element name = "database" type = "xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name = "phase" type = "xs:string"/>
+</xs:schema>

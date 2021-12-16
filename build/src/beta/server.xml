@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!-- This is a comment -->
+<configuration>
+	<mysql>
+		<host>192.168.1.200</host>
+		<port>3306</port>
+		<user>application</user>
+		<code>956A-981GLP97</code>
+		<database>DBSSIILbr</database>
+	</mysql>
+	<speech>
+		<host>192.168.1.200</host>
+		<port>35558</port>
+	</speech>
+	<ftp>
+		<host>192.168.1.200</host>		
+		<user>backup</user>
+		<code>956A-981GLP98</code>
+		<port>21</port>
+		<base>\tools\betarelease</base>
+	</ftp>
+	<workspace>
+		<failmail>C:\Users\sistemas\Documents\failmail</failmail>
+	</workspace>
+	<diversa>
+		<token>ABCD1234</token>
+		<prefixFile>CSD</prefixFile>
+		<code>956A-9719MOP7</code>
+		<cancelService>https://staging.diverza.com/stamp/cancel/</cancelService>
+		<stampService>https://staging.diverza.com/stamp/complete</stampService>
+	</diversa>
+</configuration>

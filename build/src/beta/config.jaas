@@ -1,0 +1,4 @@
+Tool
+{
+   SIIL.desktop.auth.ToolLoginModule required phase="beta" serverapp="192.168.1.200" socketport="35558" mysqlhost="192.168.1.200" mysqlport="3306" mysqluser="application" mysqldb ="DBSSIILbr";
+};

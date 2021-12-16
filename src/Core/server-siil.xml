@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!-- This is a comment -->
+<configuration>
+	<mysql>
+		<host>192.168.1.200</host>
+		<port>3306</port>
+		<user>develop</user>
+		<code>956A-981GLP97</code>
+		<database>DBSSIILa</database>
+	</mysql>
+	<speech>
+		<host>192.168.1.201</host>
+		<port>35557</port>
+	</speech>
+	<ftp>
+		<host>192.168.1.203</host>		
+		<user>backup</user>
+		<code>956A-981GLP98</code>
+		<port>21</port>
+		<base>\tools\alpha</base>
+	</ftp>
+	<workspace>
+		<failmail>C:\Users\Azael Reyes\Desktop\temp\failmail</failmail>
+	</workspace>
+	<diversa>
+		<token>ABCD1234</token>
+		<prefixFile>CSD</prefixFile>
+		<code>956A-9719MOP7</code>
+		<cancelService>https://staging.diverza.com/stamp/cancel</cancelService>
+		<stampService>https://staging.diverza.com/stamp/complete</stampService>
+		<cancelService33>https://serviciosdemo.diverza.com/api/v1/documents/cancel</cancelService33>
+		<stampService33>https://serviciosdemo.diverza.com/api/v1/documents/stamp</stampService33>
+	</diversa>
+
+	<comercial>
+		<user>sa</user>
+		<code>956A-9719GOPA</code>
+		<serverName>192.168.1.200\COMPAC</serverName>
+		<database>SIIL_COMERCIAL_DEVEL</database>
+	</comercial>
+	<phase>alpha</phase>
+
+</configuration>
