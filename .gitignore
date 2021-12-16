@@ -9,3 +9,13 @@ src/desktop/*.csv
 MySQL/r/*-bk.sql
 MySQL/r/*.bak
 build/vers/md5sums
+MySQL/a/data-delta-2.sql
+MySQL/a/data-delta-3.sql
+MySQL/a/data-delta.sql
+MySQL/br/data-delta-2.sql
+MySQL/br/data-delta-3.sql
+MySQL/br/data-delta.sql
+MySQL/r/data-delta-2.sql
+MySQL/r/data-delta-3.sql
+MySQL/r/data-delta.sql
+patch.sql
