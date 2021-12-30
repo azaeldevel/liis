@@ -1938,7 +1938,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         
         try 
         {
-            lote.loadMovements(dir+"\\lotegrua\\movements-2.csv");
+            lote.loadMovements(dir+"\\lotegrua\\movements.csv");
         }
         catch (IOException | SQLException ex) 
         {
@@ -1947,7 +1947,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         
         try 
         {
-            lote.loadResumov(dir+"\\lotegrua\\movements-2.csv");
+            lote.loadResumov(dir+"\\lotegrua\\movements.csv");
         }
         catch (IOException | SQLException ex) 
         {

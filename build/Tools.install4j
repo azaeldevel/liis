@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="9.0.5" transformSequenceNumber="9">
   <directoryPresets config="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/src/release/tool.ico" />
-  <application name="Tools SIIL" applicationId="4277-0445-2940-4314" mediaDir="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/vers" shortName="Tools" version="29.6.3" macVolumeId="9d07d50f5989a8ea">
+  <application name="Tools SIIL" applicationId="4277-0445-2940-4314" mediaDir="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/vers" shortName="Tools" version="29.6.4" macVolumeId="9d07d50f5989a8ea">
     <jreBundles jdkProviderId="AdoptOpenJDK" release="17/latest" />
   </application>
   <files>
@@ -18,7 +18,7 @@
   </files>
   <launchers>
     <launcher name="tools" id="26">
-      <executable name="Tools" iconSet="true" iconFile="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/src/release/tool.ico" executableMode="gui" />
+      <executable name="Tools" iconSet="true" iconFile="src/release/tool.ico" executableMode="gui" />
       <java mainClass="SIIL.servApp" vmParameters="-Djava.security.auth.login.config=config.jaas">
         <classPath>
           <archive location="desk.jar" failOnError="false" />

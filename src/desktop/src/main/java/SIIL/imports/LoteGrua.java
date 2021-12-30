@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -63,15 +64,15 @@ public class LoteGrua
         //System.out.println(result);
         for(List<String> row : result)
         {
-            Enterprise enterprise = Enterprise.find(dbserver, row.get(0));
+            Enterprise enterprise = Enterprise.find(dbserver, row.get(1));
             Return<Integer>  ret = null;
             if(enterprise == null)
             {
-                //System.out.println("Adding client " + row.get(0));
+                //System.out.println("Adding client " + row.get(1));
                 enterprise = new Enterprise();
-                String name = row.get(1);
+                String name = row.get(0);
                 //if(row.size() > 2) name += row.get(2);
-                ret = enterprise.insert(dbserver.getConnection(),row.get(0),name);   
+                ret = enterprise.insert(dbserver.getConnection(),row.get(1),name);   
                 if(ret.isFail()) return false;
             }
         }
@@ -154,25 +155,84 @@ public class LoteGrua
         BufferedReader br = new BufferedReader(new FileReader(movs));
         
         List<List<String>> result = new ArrayList<>();
+        //List<List<String>> result2 = new ArrayList<>();
         String line;
         while ((line = br.readLine()) != null) 
         {
             String[] values = line.split(COMMA_DELIMITER);
             result.add(Arrays.asList(values));
         }
+        int counFails = 1;
         
-        List<List<String>> result2 = new ArrayList<>();
-        for(int i = result.size() - 1; i >= 0; i--)
+        for(int i = 0; i < result.size() ; i++)
         {
-            result2.add(result.get(i));
+            if(result.get(i).size() < 3)
+            {
+                System.out.println("Tamaño menor a 3 : " + (i + 1));
+                counFails++;
+                continue;
+            }
+            else if(result.get(i).size() < 5)
+            {
+                System.out.println("Tamaño menor a 5 : " + (i + 1));
+                counFails++;
+                continue;
+            }
+            else if(result.get(i).size() < 9)
+            {
+                System.out.println("Tamaño menor a 9 : " + (i + 1));
+                counFails++;
+                continue;
+            }
+            
+            String strClient;
+            if(result.get(i).size() >= 3)
+            {
+                strClient = result.get(i).get(2).trim();
+                if(!strClient.isEmpty() && !strClient.isBlank())
+                {
+                    ArrayList<Enterprise> enterprisies = search(result.get(i).get(2).trim());
+                    if(enterprisies.size() != 1)
+                    {
+                        System.out.println("Cliente ambiguo o incomprehensible : " + (i + 1));
+                        counFails++;
+                    }
+                }
+                else
+                {
+                    System.out.println("Campo vacio : " + (i + 1));
+                    counFails++;
+                }
+            }  
+            
+            if(result.get(i).size() >= 5)        
+            {
+                String strTitem = result.get(i).get(5).trim();
+                if(strTitem.isEmpty() || strTitem.isBlank()) 
+                {
+                    System.out.println("No hay dfatos en el campo de equipo : " + (i + 1));
+                    counFails++;
+                }
+                else
+                {
+                    Titem.Type type = Titem.checkType(strTitem);            
+                    if(type == Titem.Type.UNKNOW)
+                    {
+                        System.out.println("El equipaniento es deconocido : " + (i + 1));
+                        counFails++;
+                    }
+                }
+            }
+            
         }
+        Collections.reverse(result);
         
         int countTotal=0, countFound=0, counMovs = 0;
         ArrayList<String> NotFound = new ArrayList<>();
         Set<String> setNotFound = new HashSet(NotFound);
         ArrayList<String> NotMvoment = new ArrayList<>();
         Set<String> setNotMoviment = new HashSet(NotMvoment);        
-        for(List<String> row : result2)
+        /*for(List<String> row : result)
         {
             //System.out.println("row.size() = " + row.size());
             if(row.size() < 3) continue;
@@ -187,11 +247,11 @@ public class LoteGrua
             }
             
             setNotFound.add(row.get(2).trim());            
-        }
-        int countRow = result2.size();
-        for(List<String> row : result2)
+        }*/
+        int idrow = 1;
+        for(List<String> row : result)
         {
-            countRow--;
+            idrow++;
             Battery battery = null;
             Charger charger = null;
             Forklift forklift = null;
@@ -396,13 +456,13 @@ public class LoteGrua
                 ret = mov.insert(dbserver, office, date, strFolio, titems);
                 if(!ret.isFlag())
                 {
-                    System.out.println("Insercion de Movimiento fallida : " + countRow);
+                    System.out.println("Fallo de movimiento en : " + idrow);
                     continue;
                 }
                 ret = mov.upCompany(dbserver.getConnection(), enterprisies.get(0));
                 if(!ret.isFlag())
                 {
-                    System.out.println("Fallo en actualizacion de Empresa '" + enterprisies.get(0) + "' : " + countRow);
+                    System.out.println("Fallo de movimiento : " + idrow);
                     continue;
                 }
                 String strUso = getStringUso(row.get(3));
@@ -414,18 +474,24 @@ public class LoteGrua
                 }
                 else
                 {
-                    System.out.println("Fallo en actualizacion de Uso '" + strUso + "' : " + countRow );
+                    System.out.println("Fallo de movimiento : " + idrow );
                     continue;
                 }
-                mov.upNote(dbserver.getConnection(), "Importacion de Dic/2021");
+                if(row.size() >= 12)
+                { 
+                    String strNote = row.get(11);
+                    if(strNote.isBlank() && strNote.isEmpty())
+                    {
+                        mov.upNote(dbserver.getConnection(), strNote);
+                    }
+                }
                 counMovs++;
             }
         }
         
-        String message = "Total Procesados : " + countTotal + "/" + countFound + "\n";
-        message += "Insertados : " + counMovs;
+        String message = "Total Procesados : " + result.size() + "/" + counMovs + "\n";
+        message += "Fallos : " + counFails;
         JOptionPane.showMessageDialog(null,message);
-        
         
         System.out.println("Fallos de cliente");
         for(String str : setNotFound)
@@ -438,7 +504,7 @@ public class LoteGrua
         {
             System.out.println(str);
         }
-        
+        System.out.println("Fallos de Movimientos detectados : " + counFails);
         
         return true;
     }
