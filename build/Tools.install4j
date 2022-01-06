@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="9.0.5" transformSequenceNumber="9">
-  <directoryPresets config="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/src/release/tool.ico" />
-  <application name="Tools SIIL" applicationId="4277-0445-2940-4314" mediaDir="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/vers" shortName="Tools" version="29.6.4" macVolumeId="9d07d50f5989a8ea">
+  <directoryPresets config="C:/Users/Azael/Documents/develop/liis/build/vers" />
+  <application name="Tools SIIL" applicationId="4277-0445-2940-4314" mediaDir="C:/Users/Azael/Documents/develop/liis/build/vers" shortName="Tools" version="29.6.5" macVolumeId="9d07d50f5989a8ea">
     <jreBundles jdkProviderId="AdoptOpenJDK" release="17/latest" />
   </application>
   <files>
@@ -9,11 +9,12 @@
       <mountPoint id="24" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/src/release/desk.jar" />
-      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/src/release/config.jaas" />
-      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/src/release/server.xml" />
-      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/src/release/server.xsd" />
-      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/SIIL/tools/src/SIIL/build/src/release/tool.ico" />
+      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/develop/liis/build/src/release/config.jaas" />
+      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/develop/liis/build/src/release/deploy.xml" />
+      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/develop/liis/build/src/release/desk.jar" />
+      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/develop/liis/build/src/release/server.xml" />
+      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/develop/liis/build/src/release/server.xsd" />
+      <fileEntry mountPoint="24" file="C:/Users/Azael/Documents/develop/liis/build/src/release/tool.ico" />
     </entries>
   </files>
   <launchers>

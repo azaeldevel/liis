@@ -1902,7 +1902,8 @@ public class servApp extends javax.swing.JFrame implements Runnable
         }
         catch (ClassNotFoundException | SQLException | IOException | ParserConfigurationException | SAXException ex) 
         {
-            System.out.println(ex.getMessage());
+            //System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null,ex.getMessage());
             return;
         }
             
@@ -1914,26 +1915,20 @@ public class servApp extends javax.swing.JFrame implements Runnable
         {
             lote.loadClients(dir+"\\lotegrua\\clients.csv");
         }
-        catch (IOException ex) 
+        catch (IOException | SQLException ex) 
         {
-            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (SQLException ex) 
-        {
-            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage());
         }
         
         try 
         {
             lote.loadActivos(dir+"\\lotegrua\\activos.csv");
         }
-        catch (IOException ex) 
+        catch (IOException | SQLException ex) 
         {
-            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (SQLException ex) 
-        {
-            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage());
         }
         
         try 
@@ -1942,7 +1937,8 @@ public class servApp extends javax.swing.JFrame implements Runnable
         }
         catch (IOException | SQLException ex) 
         {
-            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage());
         }
         
         try 
@@ -1951,7 +1947,8 @@ public class servApp extends javax.swing.JFrame implements Runnable
         }
         catch (IOException | SQLException ex) 
         {
-            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage());
         }
         
         try 
@@ -1960,7 +1957,8 @@ public class servApp extends javax.swing.JFrame implements Runnable
         } 
         catch (SQLException ex) 
         {
-            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage());
         }
     }//GEN-LAST:event_mnLoteGruaActionPerformed
 
