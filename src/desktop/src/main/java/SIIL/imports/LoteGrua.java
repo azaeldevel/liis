@@ -102,17 +102,17 @@ public class LoteGrua
                 {
                 case FORKLIFT:
                         Forklift forklift = new Forklift(-1);
-                        ret = forklift.insert(dbserver.getConnection(),row.get(0),"#",Import.NoImport,false,row.get(4));
+                        ret = forklift.insert(dbserver.getConnection(),row.get(0),"#",Import.NoImport,false,"#");
                         titem = forklift;
                     break;
                 case BATTERY:
                         Battery battery = new Battery(-1);
-                        ret = battery.insert(dbserver.getConnection(),row.get(0),"#",Import.NoImport,false,row.get(4));
+                        ret = battery.insert(dbserver.getConnection(),row.get(0),"#",Import.NoImport,false,"#");
                         titem = battery;
                     break;
                 case CHARGER:
                         Charger charger = new Charger(-1);
-                        ret = charger.insert(dbserver.getConnection(),row.get(0),"#",Import.NoImport,false,row.get(4));
+                        ret = charger.insert(dbserver.getConnection(),row.get(0),"#",Import.NoImport,false,"#");
                         titem = charger;
                     break;
                     default :
@@ -124,21 +124,21 @@ public class LoteGrua
                     return false;
                 }
 
-                ret = titem.upMake(dbserver.getConnection(), row.get(2));
+                ret = titem.upMake(dbserver.getConnection(), row.get(5));
                 if(ret.isFail()) 
                 {
                     System.out.println(ret.getMessage());
                     return false;
                 }
 
-                ret = titem.upModel(dbserver.getConnection(), row.get(3));
+                ret = titem.upModel(dbserver.getConnection(), row.get(6));
                 if(ret.isFail()) 
                 {
                     System.out.println(ret.getMessage());
                     return false;
                 }
                 
-                ret = titem.upSerie(dbserver.getConnection(), row.get(4));
+                ret = titem.upSerie(dbserver.getConnection(), row.get(7));
                 if(ret.isFail()) 
                 {
                     System.out.println(ret.getMessage());
@@ -210,44 +210,31 @@ public class LoteGrua
                 String strTitem = result.get(i).get(5).trim();
                 if(strTitem.isEmpty() || strTitem.isBlank()) 
                 {
-                    System.out.println("No hay dfatos en el campo de equipo : " + (i + 1));
+                    System.out.println("No hay datos en el campo de equipo : " + (i + 1));
                     counFails++;
+                }
+                else if(strTitem.compareTo("N/A") == 0) 
+                {
                 }
                 else
                 {
                     Titem.Type type = Titem.checkType(strTitem);            
                     if(type == Titem.Type.UNKNOW)
                     {
-                        System.out.println("El equipaniento es deconocido : " + (i + 1));
+                        System.out.println("El equipamiento es deconocido (" + strTitem + ") : " + (i + 1));
                         counFails++;
                     }
                 }
             }
-            
         }
         Collections.reverse(result);
         
-        int countTotal=0, countFound=0, counMovs = 0;
+        int counMovs = 0;
         ArrayList<String> NotFound = new ArrayList<>();
         Set<String> setNotFound = new HashSet(NotFound);
         ArrayList<String> NotMvoment = new ArrayList<>();
         Set<String> setNotMoviment = new HashSet(NotMvoment);        
-        /*for(List<String> row : result)
-        {
-            //System.out.println("row.size() = " + row.size());
-            if(row.size() < 3) continue;
-            
-            countTotal++;
-            
-            ArrayList<Enterprise> enterprisies = search(row.get(2).trim());
-            if(enterprisies.size() == 1)
-            {
-                countFound++;
-                continue;
-            }
-            
-            setNotFound.add(row.get(2).trim());            
-        }*/
+        
         int idrow = 1;
         for(List<String> row : result)
         {
@@ -272,6 +259,7 @@ public class LoteGrua
             if(row.size() < 5) continue;
             String strTitem = row.get(5).trim();
             if(strTitem.isEmpty() || strTitem.isBlank()) continue;
+            if(strTitem.compareTo("N/A") == 0) continue;
             Titem.Type type = Titem.checkType(strTitem);            
             if(type == Titem.Type.UNKNOW) continue;
             
@@ -289,7 +277,7 @@ public class LoteGrua
                 }
                 else
                 {
-                    forklift.insert(dbserver.getConnection(), row.get(5).trim(), "Importacion Dic/20", Forklift.Import.NoImport, false, "");    
+                    forklift.insert(dbserver.getConnection(), row.get(5).trim(), "Importacion Enero/22", Forklift.Import.NoImport, false, "");    
                     if(row.get(6).isEmpty() || row.get(6).isBlank()) forklift.upMake(dbserver.getConnection(), row.get(6).trim());
                     if(row.get(7).isEmpty() || row.get(7).isBlank()) forklift.upModel(dbserver.getConnection(), row.get(7).trim());
                     if(row.get(8).isEmpty() || row.get(8).isBlank()) forklift.upSerie(dbserver.getConnection(), row.get(8).trim());
@@ -317,10 +305,10 @@ public class LoteGrua
                         }
                         else
                         {
-                            battery.insert(dbserver.getConnection(), row.get(5).trim(), "Importacion Dic/20", Forklift.Import.NoImport, false, "");
-                            if(row.get(6).isEmpty() || row.get(6).isBlank()) battery.upMake(dbserver.getConnection(), row.get(6).trim());
-                            if(row.get(7).isEmpty() || row.get(7).isBlank()) battery.upModel(dbserver.getConnection(), row.get(7).trim());
-                            if(row.get(8).isEmpty() || row.get(8).isBlank()) battery.upSerie(dbserver.getConnection(), row.get(8).trim());
+                            battery.insert(dbserver.getConnection(), row.get(5).trim(), "Importacion Enero/22", Forklift.Import.NoImport, false, "");
+                            if(!row.get(6).isEmpty() || !row.get(6).isBlank()) battery.upMake(dbserver.getConnection(), row.get(6).trim());
+                            if(!row.get(7).isEmpty() || !row.get(7).isBlank()) battery.upModel(dbserver.getConnection(), row.get(7).trim());
+                            if(!row.get(8).isEmpty() || !row.get(8).isBlank()) battery.upSerie(dbserver.getConnection(), row.get(8).trim());
                             battery.downNumber(dbserver.getConnection());
                             battery.downSerie(dbserver);
                             battery.downMake(dbserver.getConnection());
@@ -346,7 +334,7 @@ public class LoteGrua
                         }
                         else
                         {
-                            charger.insert(dbserver.getConnection(), row.get(5).trim(), "Importacion Dic/20", Forklift.Import.NoImport, false, "");
+                            charger.insert(dbserver.getConnection(), row.get(5).trim(), "Importacion Enero/22", Forklift.Import.NoImport, false, "");
                             if(row.get(6).isEmpty() || row.get(6).isBlank()) charger.upMake(dbserver.getConnection(), row.get(6).trim());
                             if(row.get(7).isEmpty() || row.get(7).isBlank()) charger.upModel(dbserver.getConnection(), row.get(7).trim());
                             if(row.get(8).isEmpty() || row.get(8).isBlank()) charger.upSerie(dbserver.getConnection(), row.get(8).trim());
@@ -445,7 +433,68 @@ public class LoteGrua
             {
                 continue;
             }
-            
+                        
+            if(type == Titem.Type.FORKLIFT)
+            {
+                if(row.size() >= 9)
+                {
+                    String strTitemBaterry = row.get(9).trim();
+                    type = Titem.checkType(strTitem);
+                    if(strTitemBaterry.isEmpty() || strTitemBaterry.isBlank() && type != Titem.Type.UNKNOW)
+                    {
+                        if(type == Titem.Type.BATTERY)
+                        {
+                            if(battery.getID() > 0)
+                            {
+                                Flow battFlow = new Flow(battery.getID());
+                                String strSerie = battFlow.getSerie() == null? "" : battFlow.getSerie();
+                                battFlow.insert(dbserver.getConnection(), date, false, "", battery);
+                                if(battFlow.getID() > 0) 
+                                {
+                                    if(battFlow.downItem(dbserver))
+                                    {
+                                        battFlow.getItem().downNumber(dbserver.getConnection());
+                                        battFlow.getItem().downMake(dbserver.getConnection());
+                                        battFlow.getItem().downModel(dbserver);
+                                        battFlow.getItem().downSerie(dbserver);
+                                    }
+                                    titems.add(battFlow);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if(row.size() >= 10)
+                {
+                    String strTitemCharger = row.get(10).trim();
+                    type = Titem.checkType(strTitem);
+                    if(strTitemCharger.isEmpty() || strTitemCharger.isBlank() && type != Titem.Type.UNKNOW)
+                    {
+                        if(type == Titem.Type.CHARGER)
+                        {
+                            //System.out.println("Charger '" + row.get(5) + "'");
+                            if(charger.getID() > 0)
+                            {
+                                Flow charFlow = new Flow(charger.getID());
+                                String strSerie = charFlow.getSerie() == null? "" : charFlow.getSerie();
+                                charFlow.insert(dbserver.getConnection(), date, false, "", charger);
+                                if(charFlow.getID() > 0)
+                                {
+                                    if(charFlow.downItem(dbserver))
+                                    {
+                                        charFlow.getItem().downNumber(dbserver.getConnection());
+                                        charFlow.getItem().downMake(dbserver.getConnection());
+                                        charFlow.getItem().downModel(dbserver);
+                                        charFlow.getItem().downSerie(dbserver);
+                                    }
+                                    titems.add(charFlow);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             
             ArrayList<Enterprise> enterprisies = search(row.get(2));
             if(enterprisies.size() == 1)
@@ -477,12 +526,20 @@ public class LoteGrua
                     System.out.println("Fallo de movimiento : " + idrow );
                     continue;
                 }
-                if(row.size() >= 12)
+                if(row.size() >= 14)
                 { 
-                    String strNote = row.get(11);
+                    String strNote = row.get(13);
                     if(strNote.isBlank() && strNote.isEmpty())
                     {
                         mov.upNote(dbserver.getConnection(), strNote);
+                    }
+                    else if(row.size() >= 17)
+                    {
+                        strNote = row.get(16);
+                        if(strNote.isBlank() && strNote.isEmpty())
+                        {
+                            mov.upNote(dbserver.getConnection(), strNote);
+                        }
                     }
                 }
                 counMovs++;
