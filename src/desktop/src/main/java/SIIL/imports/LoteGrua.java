@@ -163,7 +163,7 @@ public class LoteGrua
             result.add(Arrays.asList(values));
         }
         int counFails = 1;
-        
+        int counFailsResults = 0;
         for(int i = 0; i < result.size() ; i++)
         {
             if(result.get(i).size() < 3)
@@ -252,16 +252,34 @@ public class LoteGrua
             {
                 //System.out.println(row);
                 setNotMoviment.add(row.toString());
+                counFailsResults++;
                 continue;
             }
             
             
-            if(row.size() < 5) continue;
+            if(row.size() < 5) 
+            {
+                counFailsResults++;
+                continue;                
+            }
             String strTitem = row.get(5).trim();
-            if(strTitem.isEmpty() || strTitem.isBlank()) continue;
-            if(strTitem.compareTo("N/A") == 0) continue;
+            if(strTitem.isEmpty() || strTitem.isBlank()) 
+            {
+                counFailsResults++;
+                continue;                
+            }
+            if(strTitem.compareTo("N/A") == 0) 
+            {
+                counFailsResults++;
+                continue;                
+            }
             Titem.Type type = Titem.checkType(strTitem);            
-            if(type == Titem.Type.UNKNOW) continue;
+            if(type == Titem.Type.UNKNOW) 
+            {
+                counFailsResults++;
+                continue;                
+            }
+                
             
             if(type == Titem.Type.FORKLIFT)
             {
@@ -430,7 +448,8 @@ public class LoteGrua
                 }
             }
             else
-            {
+            {                
+                counFailsResults++;
                 continue;
             }
                         
@@ -505,26 +524,32 @@ public class LoteGrua
                 ret = mov.insert(dbserver, office, date, strFolio, titems);
                 if(!ret.isFlag())
                 {
-                    System.out.println("Fallo de movimiento en : " + idrow);
+                    System.out.println("Fallo de movimiento 1 en : " + idrow);
+                    counFailsResults++;
                     continue;
                 }
                 ret = mov.upCompany(dbserver.getConnection(), enterprisies.get(0));
                 if(!ret.isFlag())
                 {
-                    System.out.println("Fallo de movimiento : " + idrow);
+                    System.out.println("Fallo de movimiento 2 : " + idrow);
+                    counFailsResults++;
                     continue;
                 }
-                String strUso = getStringUso(row.get(3));
-                Uso uso = new Uso(-1);
-                if(uso.selectCode(dbserver,strUso))
+                String strUso = getStringUso(row.get(15));
+                if(!strUso.isEmpty() && !strUso.isBlank() )
                 {
-                    uso.download(dbserver.getConnection());
-                    mov.upUso(dbserver.getConnection(), uso);
-                }
-                else
-                {
-                    System.out.println("Fallo de movimiento : " + idrow );
-                    continue;
+                    Uso uso = new Uso(-1);
+                    if(uso.selectCode(dbserver,strUso))
+                    {
+                        uso.download(dbserver.getConnection());
+                        mov.upUso(dbserver.getConnection(), uso);
+                    }
+                    else
+                    {
+                        System.out.println("Fallo de movimiento 3 : " + idrow );
+                        counFailsResults++;
+                        continue;
+                    }
                 }
                 if(row.size() >= 14)
                 { 
@@ -547,7 +572,7 @@ public class LoteGrua
         }
         
         String message = "Total Procesados : " + result.size() + "/" + counMovs + "\n";
-        message += "Fallos : " + counFails;
+        message += "Fallos : " + counFails + " / " + counFailsResults;
         JOptionPane.showMessageDialog(null,message);
         
         System.out.println("Fallos de cliente");
@@ -573,16 +598,65 @@ public class LoteGrua
             return "disp";
         }
                 
-        if(uso.compareTo("CUBRIR RENTA") == 0 || uso.compareTo("RENTA NUEVA") == 0 || uso.compareTo("Renta Nueva") == 0  || uso.compareTo("Renta Nueva") == 0)
+        if(uso.compareTo("RENTA CORTO PLAZO") == 0 || uso.compareTo("Renta Corto Plazo") == 0 || uso.compareTo("renta corto plazo") == 0  || uso.compareTo("Renta") == 0)
         {
             return "rtacp";
         }
                              
-        if(uso.compareTo("REPARCION") == 0 || uso.compareTo("reparacion") == 0   || uso.compareTo("VIENE A REPARACION") == 0 || uso.compareTo("Reparacion de equipo") == 0 || uso.compareTo("Evaluacion de Bateria") == 0 || uso.compareTo("Reparacion de equipo") == 0)
+        if(uso.compareTo("REPARCION") == 0 || uso.compareTo("reparacion") == 0   || uso.compareTo("Repracion") == 0 )
         {
             return "rep";
         }
-                         
+        
+        if(uso.compareTo("PRESTAMO") == 0 || uso.compareTo("Prestamo") == 0   || uso.compareTo("prestamo") == 0 )
+        {
+            return "pres";
+        }
+        
+        if(uso.compareTo("RENTA OPCION COMPRA") == 0 || uso.compareTo("Renta Opcion Compra") == 0   || uso.compareTo("renta opcion compra") == 0 )
+        {
+            return "rtaoc";
+        }        
+        
+        if(uso.compareTo("VENTA") == 0 || uso.compareTo("Venta") == 0   || uso.compareTo("Venta") == 0 )
+        {
+            return "vta";
+        } 
+        
+        if(uso.compareTo("MOVIMIENTO") == 0 || uso.compareTo("Movimiento") == 0   || uso.compareTo("movimiento") == 0 )
+        {
+            return "mov";
+        } 
+        
+        if(uso.compareTo("BAJA") == 0 || uso.compareTo("Baja") == 0   || uso.compareTo("baja") == 0 )
+        {
+            return "baja";
+        }
+        
+        if(uso.compareTo("TALLER PINTURA") == 0 || uso.compareTo("Taller Pintura") == 0   || uso.compareTo("taller pintura") == 0 )
+        {
+            return "tpint";
+        }
+        
+        if(uso.compareTo("CUBRIENDO") == 0 || uso.compareTo("Cubriendo") == 0   || uso.compareTo("cubriendo") == 0 )
+        {
+            return "corr";
+        }
+        
+        if(uso.compareTo("OTRAS") == 0 || uso.compareTo("Otras") == 0   || uso.compareTo("otras") == 0 )
+        {
+            return "otras";
+        }
+        
+        if(uso.compareTo("AJUSTE") == 0 || uso.compareTo("Ajuste") == 0   || uso.compareTo("ajuste") == 0 )
+        {
+            return "aj";
+        }
+                
+        if(uso.compareTo("CANCELADA") == 0 || uso.compareTo("Cancela") == 0   || uso.compareTo("cacelada") == 0 )
+        {
+            return "";
+        }
         /*
         if(uso.compareTo("PRESTAMO") == 0 || uso.compareTo("Prestamo de equipo") == 0)
         {
@@ -597,9 +671,13 @@ public class LoteGrua
         {
             return "otras";
         }
+        if(uso.compareTo("CUBRIR RENTA") == 0 || uso.compareTo("RENTA NUEVA") == 0 || uso.compareTo("Renta Nueva") == 0  || uso.compareTo("Renta Nueva") == 0)
+        {
+            return "rtacp";
+        }
         */
         
-        return "otras";
+        return "";
     }
     public ArrayList<Enterprise> search(String search)
     {
@@ -848,11 +926,14 @@ public class LoteGrua
                     }
             }
             
-            String strUso = getStringUso(row.get(3));
+            String strUso = getStringUso(row.get(15));
             Uso uso = new Uso(-1);
-            if(uso.selectCode(dbserver,strUso))
+            if(!strUso.isEmpty() && !strUso.isBlank())
             {
-                uso.download(dbserver.getConnection());
+                if(uso.selectCode(dbserver,strUso))
+                {
+                    uso.download(dbserver.getConnection());
+                }
             }
             Enterprise enterprise = null;
             ArrayList<Enterprise> enterprisies = search(row.get(2).trim());
