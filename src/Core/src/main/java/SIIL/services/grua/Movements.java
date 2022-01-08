@@ -484,7 +484,7 @@ public class Movements implements Searchable
             return new Return<>(false,"connection is null.");
         }
         String sql = "UPDATE  " + MYSQL_AVATAR_TABLE + " SET uso='" + uso.getCode() + "' WHERE id=" + id;
-        //System.out.println(sql);
+        System.out.println(sql);
         Statement stmt = connection.createStatement();
         return new Return<>(true, (Integer)stmt.executeUpdate(sql));
     }

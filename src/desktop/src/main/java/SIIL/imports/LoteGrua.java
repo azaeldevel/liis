@@ -242,8 +242,6 @@ public class LoteGrua
             Battery battery = null;
             Charger charger = null;
             Forklift forklift = null;
-            Charger addCharger = null;
-            Battery addBattery = null;
             //System.out.println("row.size() = " + row.size());
             
             Return ret;
@@ -745,6 +743,7 @@ public class LoteGrua
             result.add(Arrays.asList(values));
         }
         
+        Collections.reverse(result);
         Office office = new Office(dbserver,1);
         int countTotal = 0;
         for(List<String> row : result)
@@ -843,8 +842,15 @@ public class LoteGrua
                 } 
                 catch (ParseException ex) 
                 {
-                    Logger.getLogger(LoteGrua.class.getName()).log(Level.SEVERE, null, ex);
-                    date = new Date();
+                    try 
+                    {
+                        date = new SimpleDateFormat("dd-MM-yy").parse(row.get(0).trim());
+                    } 
+                    catch (ParseException ex1) 
+                    {
+                        Logger.getLogger(LoteGrua.class.getName()).log(Level.SEVERE, null, ex1);                        
+                        date = new Date();
+                    }
                 }
             }
             else
@@ -928,13 +934,28 @@ public class LoteGrua
             
             String strUso = getStringUso(row.get(15));
             Uso uso = new Uso(-1);
+            System.out.println("uso = '" + row.get(15) + "'");
             if(!strUso.isEmpty() && !strUso.isBlank())
             {
                 if(uso.selectCode(dbserver,strUso))
+                {                    
+                    ret = uso.download(dbserver.getConnection());
+                    if(ret.isFail())
+                    {
+                        throw new RuntimeException("Fallo el uso '" + row.get(15) + "'.");
+                    }
+                }
+                else
                 {
-                    uso.download(dbserver.getConnection());
+                    throw new RuntimeException("Fallo el uso '" + row.get(15) + "'.");
                 }
             }
+            else
+            {
+                //throw new RuntimeException("Fallo el uso '" + row.get(15) + "'.");
+                continue;
+            }
+                
             Enterprise enterprise = null;
             ArrayList<Enterprise> enterprisies = search(row.get(2).trim());
             if(enterprisies.size() == 1)
