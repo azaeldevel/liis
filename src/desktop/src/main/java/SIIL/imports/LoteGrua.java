@@ -449,11 +449,13 @@ public class LoteGrua
                 if(row.size() >= 9)
                 {
                     String strTitemBaterry = row.get(9).trim();
-                    type = Titem.checkType(strTitem);
-                    if(strTitemBaterry.isEmpty() || strTitemBaterry.isBlank() && type != Titem.Type.UNKNOW)
+                    type = Titem.checkType(strTitemBaterry);
+                    if(!strTitemBaterry.isEmpty() && !strTitemBaterry.isBlank() && type != Titem.Type.UNKNOW)
                     {
                         if(type == Titem.Type.BATTERY)
-                        {
+                        {                            
+                            battery = new Battery(-1);
+                            ret = battery.search(dbserver.getConnection(), strTitem.trim());
                             if(battery.getID() > 0)
                             {
                                 Flow battFlow = new Flow(battery.getID());
@@ -478,12 +480,13 @@ public class LoteGrua
                 if(row.size() >= 10)
                 {
                     String strTitemCharger = row.get(10).trim();
-                    type = Titem.checkType(strTitem);
-                    if(strTitemCharger.isEmpty() || strTitemCharger.isBlank() && type != Titem.Type.UNKNOW)
+                    type = Titem.checkType(strTitemCharger);
+                    if(!strTitemCharger.isEmpty() && !strTitemCharger.isBlank() && type != Titem.Type.UNKNOW)
                     {
                         if(type == Titem.Type.CHARGER)
                         {
-                            //System.out.println("Charger '" + row.get(5) + "'");
+                            charger = new Charger(-1);
+                            ret = charger.search(dbserver.getConnection(), strTitem.trim());
                             if(charger.getID() > 0)
                             {
                                 Flow charFlow = new Flow(charger.getID());
@@ -841,7 +844,7 @@ public class LoteGrua
             result.add(Arrays.asList(values));
         }
         
-        Collections.reverse(result);
+        //Collections.reverse(result);
         Office office = new Office(dbserver,1);
         int countTotal = 0;
         for(List<String> row : result)
@@ -934,80 +937,104 @@ public class LoteGrua
             } 
             
             Date date = convertDate(row.get(0).trim());
-            
             Flow forkFlow = null;
             Flow battFlow = null;
             Flow charFlow = null;
+            
+            //System.out.print("Titem '" + row.get(5).trim() + "' : ");
             if(type == Titem.Type.FORKLIFT)
             {
-                forkFlow = new Flow(-1);
-                    if(forkFlow.selectTitemNumber(dbserver,row.get(5).trim()))
+                if(row.size() >= 5)
+                {
+                    String strTitemForklift = row.get(9).trim();
+                    type = Titem.checkType(strTitem);
+                    if(!strTitemForklift.isEmpty() && !strTitemForklift.isBlank() && type != Titem.Type.UNKNOW)
                     {
-                        if(forkFlow.getID() > 0)
+                        if(type == Titem.Type.FORKLIFT)
                         {
-                            if(forkFlow.downItem(dbserver))
+                            if(forklift.getID() > 0)
                             {
-                                forkFlow.getItem().downNumber(dbserver.getConnection());
-                                forkFlow.getItem().downMake(dbserver.getConnection());
-                                forkFlow.getItem().downModel(dbserver);
-                                forkFlow.getItem().downSerie(dbserver);
-                                //titems.add(forkFlow);
-                                if(resumov.find(dbserver,forkFlow)) 
+                                forkFlow = new Flow(forklift.getID());
+                                String strSerie = forkFlow.getSerie() == null? "" : forkFlow.getSerie();
+                                forkFlow.selectForkliftRandom(dbserver);
+                                if(forkFlow.getID() > 0) 
                                 {
-                                    continue;
-                                }//si ya existe no agregar
+                                    if(forkFlow.downItem(dbserver))
+                                    {
+                                        forkFlow.getItem().downNumber(dbserver.getConnection());
+                                        forkFlow.getItem().downMake(dbserver.getConnection());
+                                        forkFlow.getItem().downModel(dbserver);
+                                        forkFlow.getItem().downSerie(dbserver);
+                                    }
+                                }
                             }
                         }
                     }
-                    else
+                }
+                
+                if(row.size() >= 9)
+                {
+                    String strTitemBaterry = row.get(9).trim();
+                    type = Titem.checkType(strTitemBaterry);
+                    if(!strTitemBaterry.isEmpty() && !strTitemBaterry.isBlank() && type == Titem.Type.BATTERY)
                     {
-                        throw new RuntimeException("No se encontro el articulo '" + row.get(5) + "'.");
-                    }
-            }
-            else if(type == Titem.Type.BATTERY)
-            {
-                    battFlow = new Flow(-1);
-                    if(battFlow.selectTitemNumber(dbserver,row.get(5).trim()))
-                    {
-                        if(battFlow.getID() > 0)
+                        //System.out.print(", B : '" + strTitemBaterry + "'");
+                        if(type == Titem.Type.BATTERY)
                         {
-                            if(battFlow.downItem(dbserver))
+                            battery = new Battery(-1);
+                            ret = battery.search(dbserver.getConnection(), strTitemBaterry);
+                            if(battery.getID() > 0)
                             {
-                                battFlow.getItem().downNumber(dbserver.getConnection());
-                                battFlow.getItem().downMake(dbserver.getConnection());
-                                battFlow.getItem().downModel(dbserver);
-                                battFlow.getItem().downSerie(dbserver);
+                                battFlow = new Flow(battery.getID());
+                                String strSerie = battFlow.getSerie() == null? "" : battFlow.getSerie();
+                                battFlow.selectBatteryRandom(dbserver);
+                                if(battFlow.getID() > 0) 
+                                {
+                                    if(battFlow.downItem(dbserver))
+                                    {
+                                        battFlow.getItem().downNumber(dbserver.getConnection());
+                                        battFlow.getItem().downMake(dbserver.getConnection());
+                                        battFlow.getItem().downModel(dbserver);
+                                        battFlow.getItem().downSerie(dbserver);
+                                    }
+                                }
                             }
                         }
-                        if(resumov.find(dbserver,battFlow)) continue; //si ya existe no agregar
                     }
-                    else
+                }
+                
+                if(row.size() >= 10)
+                {
+                    String strTitemCharger = row.get(10).trim();
+                    type = Titem.checkType(strTitemCharger);
+                    if(!strTitemCharger.isEmpty() && !strTitemCharger.isBlank() && type != Titem.Type.UNKNOW)
                     {
-                        throw new RuntimeException("No se encontro el articulo '" + row.get(5) + "'.");
-                    }
-            }
-            else if(type == Titem.Type.CHARGER)
-            {
-                    charFlow = new Flow(-1);
-                    if(charFlow.selectTitemNumber(dbserver,row.get(5).trim()))
-                    {
-                        if(charFlow.getID() > 0)
+                        //System.out.println(", C : '" + strTitemCharger + "'");
+                        if(type == Titem.Type.CHARGER)
                         {
-                            if(charFlow.downItem(dbserver))
+                            charger = new Charger(-1);
+                            ret = charger.search(dbserver.getConnection(), strTitemCharger);
+                            if(charger.getID() > 0)
                             {
-                                charFlow.getItem().downNumber(dbserver.getConnection());
-                                charFlow.getItem().downMake(dbserver.getConnection());
-                                charFlow.getItem().downModel(dbserver);
-                                charFlow.getItem().downSerie(dbserver);
+                                charFlow = new Flow(charger.getID());
+                                String strSerie = charFlow.getSerie() == null? "" : charFlow.getSerie();
+                                charFlow.selectChargerRandom(dbserver);
+                                if(charFlow.getID() > 0)
+                                {
+                                    if(charFlow.downItem(dbserver))
+                                    {
+                                        charFlow.getItem().downNumber(dbserver.getConnection());
+                                        charFlow.getItem().downMake(dbserver.getConnection());
+                                        charFlow.getItem().downModel(dbserver);
+                                        charFlow.getItem().downSerie(dbserver);
+                                    }
+                                }
                             }
                         }
-                        if(resumov.find(dbserver,charFlow)) continue; //si ya existe no agregar
                     }
-                    else
-                    {
-                        throw new RuntimeException("No se encontro el articulo '" + row.get(5) + "'.");
-                    }
+                }
             }
+            //System.out.println("");
             
             String strUso = getStringUso(row.get(15));
             Uso uso = new Uso(-1);
@@ -1044,7 +1071,20 @@ public class LoteGrua
                 continue;
             }
             
-            if(resumov.insert(dbserver, office, uso, enterprise, forkFlow, date, null)) countTotal++;
+            if(resumov.insert(dbserver, office, uso, enterprise, forkFlow, date, null)) 
+            {
+                if(battFlow != null)
+                {
+                    //System.out.println("Agregando bateria.");
+                    resumov.upBattery(dbserver.getConnection(), battFlow, null);
+                } 
+                if(charFlow != null)
+                {
+                    resumov.upCharger(dbserver.getConnection(), charFlow, null);
+                }
+                countTotal++;
+            }
+                
         }
         String message = "Hoja de renta : " + countTotal;
         JOptionPane.showMessageDialog(null,message);

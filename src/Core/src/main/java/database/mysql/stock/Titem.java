@@ -382,8 +382,16 @@ public class Titem extends Item
     }
     
     public static Type checkType(String titem) throws SQLException
-    {
-        if(titem.startsWith("B-"))
+    {        
+        if(titem.isEmpty() || titem.isBlank())
+        {
+            return Type.UNKNOW;
+        }
+        else if(titem.startsWith("N/A"))
+        {
+            return Type.UNKNOW;
+        }
+        else if(titem.startsWith("B-"))
         {
             return Type.BATTERY;
         }

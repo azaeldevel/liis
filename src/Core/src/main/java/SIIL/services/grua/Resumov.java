@@ -1223,15 +1223,18 @@ public class Resumov implements Vaultable
         {
             sql = "UPDATE  " + MYSQL_AVATAR_TABLE + " SET batteryNumber=NULL,batteryBD=NULL WHERE id=" + id;
         }
-        System.out.println(sql);
-        Statement stmt = connection.createStatement();        
-        Value val = new Value();
-        val.setTraceID(traceContext.getID());
-        val.setTable(MYSQL_AVATAR_TABLE);
-        val.setLlave("folio= sin orden"); 
-        val.setField("battery");
-        val.setBrief("Se agrego Bateria a hoja de Renta");    
-        val.setLlave("folio= sin orden"); 
+        //System.out.println(sql);
+        Statement stmt = connection.createStatement();  
+        if(traceContext != null)
+        {
+            Value val = new Value();
+            val.setTraceID(traceContext.getID());
+            val.setTable(MYSQL_AVATAR_TABLE);
+            val.setLlave("folio= sin orden"); 
+            val.setField("battery");
+            val.setBrief("Se agrego Bateria a hoja de Renta");    
+            val.setLlave("folio= sin orden");
+        }
         return new Return(Return.Status.DONE, stmt.executeUpdate(sql));
     }
 
@@ -1256,13 +1259,16 @@ public class Resumov implements Vaultable
             sql = "UPDATE  " + MYSQL_AVATAR_TABLE + " SET chargerNumber=NULL, chargerBD=NULL WHERE id=" + id;
         }
         Statement stmt = connection.createStatement();
-        Value val = new Value();
-        val.setTraceID(traceContext.getID());
-        val.setTable(MYSQL_AVATAR_TABLE);
-        val.setLlave("folio= sin orden"); 
-        val.setField("charger");
-        val.setBrief("Se agrego cargador a hoja de Renta");    
-        val.setLlave("folio= sin orden"); 
+        if(traceContext != null)
+        {
+            Value val = new Value();
+            val.setTraceID(traceContext.getID());
+            val.setTable(MYSQL_AVATAR_TABLE);
+            val.setLlave("folio= sin orden"); 
+            val.setField("charger");
+            val.setBrief("Se agrego cargador a hoja de Renta");    
+            val.setLlave("folio= sin orden"); 
+        }
         //System.out.println(sql);
         return new Return(Return.Status.DONE, stmt.executeUpdate(sql));
     }
