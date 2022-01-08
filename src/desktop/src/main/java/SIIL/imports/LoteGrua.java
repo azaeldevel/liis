@@ -587,14 +587,17 @@ public class LoteGrua
         if(strDate.isEmpty() || strDate.isBlank()) return new Date();
         
         Date date;
+        
+        Locale englishLocale = new Locale("en", "US");
+        
         try 
         {
-            System.out.println(strDate);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            //System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy",englishLocale);
             date = sdf.parse(strDate);
             sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
-            System.out.println(sdf.format(date));
+            //System.out.println(sdf.format(date));
             return date;
         } 
         catch (ParseException ex) 
@@ -604,12 +607,27 @@ public class LoteGrua
                 
         try 
         {
-            System.out.println(strDate);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+            //System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy",englishLocale);
             date = sdf.parse(strDate);
             sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
-            System.out.println(sdf.format(date));
+            //System.out.println(sdf.format(date));
+            return date;
+        } 
+        catch (ParseException ex) 
+        {
+                    
+        }
+        
+        try 
+        {
+            //System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("F-MMM-yy",englishLocale);
+            date = sdf.parse(strDate);
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
+            //System.out.println(sdf.format(date));
             return date;
         } 
         catch (ParseException ex) 
@@ -618,14 +636,31 @@ public class LoteGrua
         }
         
         Locale spanishLocale = new Locale("es", "ES");
+        
+        
         try 
         {
-            System.out.println(strDate);
+            //System.out.println(strDate);
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy",spanishLocale);
             date = sdf.parse(strDate);
             sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
-            System.out.println(sdf.format(date));
+            //System.out.println(sdf.format(date));
+            return date;
+        } 
+        catch (ParseException ex) 
+        {
+                    
+        }
+                
+        try 
+        {
+            //System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy",spanishLocale);
+            date = sdf.parse(strDate);
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
+            //System.out.println(sdf.format(date));
             return date;
         } 
         catch (ParseException ex) 
@@ -635,12 +670,12 @@ public class LoteGrua
         
         try 
         {
-            System.out.println(strDate);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy",spanishLocale);
+            //System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("F-MMM-yy",spanishLocale);
             date = sdf.parse(strDate);
             sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
-            System.out.println(sdf.format(date));
+            //System.out.println(sdf.format(date));
             return date;
         } 
         catch (ParseException ex) 
@@ -648,6 +683,7 @@ public class LoteGrua
                     
         }
         
+        System.out.println(strDate);
         return new Date();
     }    
     
