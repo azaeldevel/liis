@@ -1902,7 +1902,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         }
         catch (ClassNotFoundException | SQLException | IOException | ParserConfigurationException | SAXException ex) 
         {
-            //System.out.println(ex.getMessage());
+            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
             return;
         }
@@ -1917,7 +1917,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         }
         catch (IOException | SQLException ex) 
         {
-            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
         
@@ -1927,7 +1927,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         }
         catch (IOException | SQLException ex) 
         {
-            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
         
@@ -1937,7 +1937,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         }
         catch (IOException | SQLException ex) 
         {
-            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
         
@@ -1947,7 +1947,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         }
         catch (IOException | SQLException ex) 
         {
-            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
         
@@ -1957,7 +1957,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         } 
         catch (SQLException ex) 
         {
-            //Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
     }//GEN-LAST:event_mnLoteGruaActionPerformed

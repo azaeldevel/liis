@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -166,7 +167,13 @@ public class LoteGrua
         int counFailsResults = 0;
         for(int i = 0; i < result.size() ; i++)
         {
-            if(result.get(i).size() < 3)
+            if(result.get(i).size() < 6)
+            {
+                System.out.println("Tamaño menor a 3 : " + (i + 1));
+                counFails++;
+                continue;
+            }
+            else if(result.get(i).size() < 3)
             {
                 System.out.println("Tamaño menor a 3 : " + (i + 1));
                 counFails++;
@@ -215,6 +222,8 @@ public class LoteGrua
                 }
                 else if(strTitem.compareTo("N/A") == 0) 
                 {
+                    System.out.println("No hay datos en el campo de equipo : " + (i + 1));
+                    counFails++;
                 }
                 else
                 {
@@ -363,25 +372,9 @@ public class LoteGrua
                 }
             }
             
-            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-            String strDate = row.get(0).trim();
-            Date date = null;
-            if(strDate.isEmpty() || strDate.isBlank()) 
-            {
-                try 
-                {
-                    date = new SimpleDateFormat("dd/MM/yyyy").parse(row.get(0).trim());
-                } 
-                catch (ParseException ex) 
-                {
-                    Logger.getLogger(LoteGrua.class.getName()).log(Level.SEVERE, null, ex);
-                    date = new Date();
-                }
-            }
-            else
-            {
-                date = new Date();
-            }  
+            
+            Date date = convertDate(row.get(0).trim());
+              
             List<Flow> titems = new ArrayList<>();
             
             if(type == Titem.Type.FORKLIFT)
@@ -588,6 +581,75 @@ public class LoteGrua
         
         return true;
     }
+    
+    Date convertDate(String strDate)
+    {
+        if(strDate.isEmpty() || strDate.isBlank()) return new Date();
+        
+        Date date;
+        try 
+        {
+            System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            date = sdf.parse(strDate);
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
+            System.out.println(sdf.format(date));
+            return date;
+        } 
+        catch (ParseException ex) 
+        {
+                    
+        }
+                
+        try 
+        {
+            System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+            date = sdf.parse(strDate);
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
+            System.out.println(sdf.format(date));
+            return date;
+        } 
+        catch (ParseException ex) 
+        {
+                    
+        }
+        
+        Locale spanishLocale = new Locale("es", "ES");
+        try 
+        {
+            System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy",spanishLocale);
+            date = sdf.parse(strDate);
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
+            System.out.println(sdf.format(date));
+            return date;
+        } 
+        catch (ParseException ex) 
+        {
+                    
+        }
+        
+        try 
+        {
+            System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy",spanishLocale);
+            date = sdf.parse(strDate);
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
+            System.out.println(sdf.format(date));
+            return date;
+        } 
+        catch (ParseException ex) 
+        {
+                    
+        }
+        
+        return new Date();
+    }    
     
     public String getStringUso(String uso)
     {
@@ -830,33 +892,12 @@ public class LoteGrua
                     }
                 }
             }
-            
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-            String strDate = row.get(0).trim();
-            Date date = null;
-            if(strDate.isEmpty() || strDate.isBlank()) 
-            {
-                try 
-                {
-                    date = new SimpleDateFormat("dd/MM/yyyy").parse(row.get(0).trim());
-                } 
-                catch (ParseException ex) 
-                {
-                    try 
-                    {
-                        date = new SimpleDateFormat("dd-MM-yy").parse(row.get(0).trim());
-                    } 
-                    catch (ParseException ex1) 
-                    {
-                        Logger.getLogger(LoteGrua.class.getName()).log(Level.SEVERE, null, ex1);                        
-                        date = new Date();
-                    }
-                }
-            }
             else
             {
-                date = new Date();
-            }
+                continue;
+            } 
+            
+            Date date = convertDate(row.get(0).trim());
             
             Flow forkFlow = null;
             Flow battFlow = null;
@@ -934,7 +975,7 @@ public class LoteGrua
             
             String strUso = getStringUso(row.get(15));
             Uso uso = new Uso(-1);
-            System.out.println("uso = '" + row.get(15) + "'");
+            //System.out.println("uso = '" + row.get(15) + "'");
             if(!strUso.isEmpty() && !strUso.isBlank())
             {
                 if(uso.selectCode(dbserver,strUso))

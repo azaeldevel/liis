@@ -1133,7 +1133,7 @@ public class Flow
         //{
             sql = sql + ",activeSerie,serie";
         //}
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sql = sql + ") VALUES("  + item.getID() + ",'" + sdf.format(ingreso);
         if(activeSerie)
         {
