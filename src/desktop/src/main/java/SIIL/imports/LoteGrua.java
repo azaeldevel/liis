@@ -11,6 +11,7 @@ import SIIL.services.grua.Battery;
 import SIIL.services.grua.Charger;
 import SIIL.services.grua.Movements;
 import SIIL.services.grua.Resumov;
+import SIIL.services.grua.Tipo;
 import SIIL.services.grua.Uso;
 import database.mysql.stock.Item;
 import database.mysql.stock.Titem.Import;
@@ -561,6 +562,18 @@ public class LoteGrua
                         }
                     }
                 }
+                
+                Tipo movT = new Tipo(convertTipo(row.get(4)));
+                if(movT.getID() > 0)
+                {
+                    movT.download(dbserver.getConnection());
+                    mov.upTMov(dbserver.getConnection(), movT);
+                }
+                else
+                {
+                    System.out.println("Tipo desconocido : " + row.get(4));
+                }
+                
                 counMovs++;
             }
         }
@@ -584,6 +597,34 @@ public class LoteGrua
         
         return true;
     }
+    
+    int convertTipo(String tipo)
+    {
+        if(tipo.compareTo("CAMBIO") == 0 || tipo.compareTo("Cambio") == 0  || tipo.compareTo("cambio") == 0 )
+        {
+            return 3;
+        }
+        else if(tipo.compareTo("CANCELADA") == 0 || tipo.compareTo("Cancelad") == 0  || tipo.compareTo("cancelada") == 0 )
+        {
+            return 5;
+        }
+        else if(tipo.compareTo("ENTRADA") == 0 || tipo.compareTo("Entrada") == 0  || tipo.compareTo("entrada") == 0 )
+        {
+            return 1;
+        }
+        else if(tipo.compareTo("MOVIMIENTO") == 0 || tipo.compareTo("Movimiento") == 0  || tipo.compareTo("movimiento") == 0 )
+        {
+            return 3;
+        }
+        else if(tipo.compareTo("SALIDA") == 0 || tipo.compareTo("Salida") == 0  || tipo.compareTo("salida") == 0 )
+        {
+            return 2;
+        }
+        else
+        {
+            return -1;
+        }
+    }    
     
     Date convertDate(String strDate)
     {
@@ -866,10 +907,10 @@ public class LoteGrua
             
             if(type == Titem.Type.FORKLIFT)
             {
-                if(!row.get(5).trim().isEmpty() && !row.get(5).trim().isBlank())
+                if(!strTitem.isEmpty() && !strTitem.isBlank())
                 {
                     forklift = new Forklift(-1);
-                    ret = forklift.searchForklift(dbserver, row.get(5).trim());
+                    ret = forklift.searchForklift(dbserver, strTitem);
                     if(ret.isFlag())
                     {
                         forklift.downNumber(dbserver.getConnection());
@@ -1084,6 +1125,8 @@ public class LoteGrua
                 }
                 countTotal++;
             }
+            
+           
                 
         }
         String message = "Hoja de renta : " + countTotal;
