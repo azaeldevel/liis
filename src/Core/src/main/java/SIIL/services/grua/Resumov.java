@@ -134,7 +134,7 @@ public class Resumov implements Vaultable
         this.poFile = null;
         String sql = "UPDATE " + MYSQL_AVATAR_TABLE + " SET poFile=" + poFile.getBobeda().getID() + " WHERE ID=" + id;
         java.sql.Statement stmt = connection.getConnection().createStatement();
-        System.out.println(sql);
+        //System.out.println(sql);
         return new Return(true, stmt.executeUpdate(sql));
     }
     
@@ -900,14 +900,17 @@ public class Resumov implements Vaultable
         this.note = null;
         String sql = "UPDATE  " + MYSQL_AVATAR_TABLE + " SET note='" + note + "' WHERE id=" + id;
         Statement stmt = connection.createStatement();
-        Value val = new Value();
-        val.setTraceID(traceContext.getID());
-        val.setTable(MYSQL_AVATAR_TABLE);
-        int minLeng = Math.min(note.length(), 10);
-        val.setAfter(note.substring(0, minLeng) + "...");
-        val.setField("note");
-        val.setBrief("Se Modifico el campo de comentario");    
-        val.setLlave("folio= sin orden"); 
+        if(traceContext != null)
+        {
+            Value val = new Value();
+            val.setTraceID(traceContext.getID());
+            val.setTable(MYSQL_AVATAR_TABLE);
+            int minLeng = Math.min(note.length(), 10);
+            val.setAfter(note.substring(0, minLeng) + "...");
+            val.setField("note");
+            val.setBrief("Se Modifico el campo de comentario");    
+            val.setLlave("folio= sin orden"); 
+        }
         int affected = stmt.executeUpdate(sql);
         if(affected != 1)
         {
@@ -1036,7 +1039,7 @@ public class Resumov implements Vaultable
         if(Forklift.isForklift(connection, (Titem) flow.getItem()))
         {
             Forklift fork = (Forklift)flow.getItem();
-            sql = sql + ",'" + MYSQL_AVATAR_TABLE_BACKWARD_BD + "','" + fork.getNumber() + "','" + MYSQL_AVATAR_TABLE_BACKWARD_BD + "','" + fork.getNumber() + "'," + flow.getID();
+            sql = sql + ",'" + MYSQL_AVATAR_TABLE_BACKWARD_BD + "','" + fork.getNumber()  + "','" + MYSQL_AVATAR_TABLE_BACKWARD_BD + "','" + fork.getNumber() + "'," + flow.getID();
             if(fork.battery != null)
             {
                 sql = sql + ",'" + MYSQL_AVATAR_TABLE_BACKWARD_BD + "','" + fork.battery.getNumber() + "'";
@@ -1315,7 +1318,27 @@ public class Resumov implements Vaultable
         this.id = -1;
         return false;
     }
-
+    public boolean find(Database db, Titem titem) throws SQLException 
+    {
+        clean();
+        if(titem.getID() <= 0) throw new InvalidParameterException("Dato invalido");
+        if(db == null) throw new InvalidParameterException("Connection is null.");
+        
+        String sql;
+        ResultSet rs;
+        sql = "SELECT id FROM  " + MYSQL_AVATAR_TABLE + " WHERE titemNumber = '" + titem.getNumber() + "'";
+        //System.out.println(sql);
+        rs = db.query(sql);
+        if(rs.next())
+        {
+            this.id = rs.getInt(1);
+            return true;
+        }
+        
+        this.id = -1;
+        return false;
+    }
+    
     boolean upOffice(Database db, Office office, Trace traceContext) throws SQLException 
     {
         if(id < 1)

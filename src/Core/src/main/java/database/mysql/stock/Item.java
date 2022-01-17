@@ -311,7 +311,7 @@ public class Item
             sql = "SELECT id FROM " + MYSQL_AVATAR_TABLE + " ORDER BY id DESC LIMIT 20";
         }
         Statement stmt = database.getConnection().createStatement();
-        System.out.println(sql);
+        //System.out.println(sql);
         ResultSet  rs =stmt.executeQuery(sql);
         ArrayList<Item> list = new ArrayList<>();
         while(rs.next())
@@ -329,6 +329,7 @@ public class Item
             return false;
         }
         String sql = "SELECT serie FROM " + MYSQL_AVATAR_TABLE + " WHERE serie IS NOT NULL AND id = " + id;
+        //System.out.println(sql);
         ResultSet rs = database.query(sql);
         if(rs.next())
         {
