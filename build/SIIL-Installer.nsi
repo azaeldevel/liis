@@ -5,7 +5,7 @@
 !define VERSION "29.10.0"
 !define PUBLISHER "Azael Reyes"
 !define WEBSITE "http://siil.com/"
-!define JRE_VERSION "1.7"
+!define JRE_VERSION "17"
 !define JRE_URL "http://siil.com"
 
 !include "FileFunc.nsh"
@@ -15,7 +15,7 @@
 !insertmacro VersionCompare
 
 Name "${NAME}"
-OutFile "vers\${NAME}-${VERSION}.exe"
+OutFile "vers\Installer-${NAME}-${VERSION}.exe"
 RequestExecutionLevel admin
 ;XPStyle on
 SetCompressor bzip2
@@ -65,13 +65,10 @@ Function DetectJRE
 FunctionEnd
 
 Section
-  Call DetectJRE
-  SetOutPath $INSTDIR
-  WriteUninstaller "$INSTDIR\Uninstall.exe"
+  SetOutPath $INSTDIR\
   
-  CreateDirectory "$SMPROGRAMS\${NAME}"
-  CreateShortCut "$SMPROGRAMS\${NAME}\$(Uninstall).lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0 SW_SHOWNORMAL
-	
+;  Call DetectJRE
+  
   File src\release\desk.jar
   File src\release\config.jaas
   File src\release\deploy.xml
@@ -79,7 +76,11 @@ Section
   File src\release\server.xsd
   File src\release\tool.ico
   
-  CreateShortCut "$INSTDIR\${NAME}\Tools.lnk" "$SYSDIR\java" "-jar $\"$INSTDIR\${JAR}" "$INSTDIR\tools.ico" 0 SW_SHOWNORMAL
+  WriteUninstaller "$INSTDIR\Uninstall.exe"
+  
+  CreateDirectory "$SMPROGRAMS\${NAME}"
+  CreateShortCut "$SMPROGRAMS\${NAME}\$(Uninstall).lnk" "$INSTDIR\Uninstall.exe" 
+  CreateShortCut "$SMPROGRAMS\${NAME}\Tools.lnk" "javaw.exe" " -jar ${JAR} tool.ico"
 
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayName" "${NAME}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayVersion" "${VERSION}"
