@@ -6,6 +6,7 @@ import SIIL.Server.Database;
 import database.mysql.stock.Titem;
 import SIIL.client.sales.Enterprise;
 import SIIL.core.Office;
+import SIIL.servApp;
 import SIIL.services.grua.Forklift;
 import SIIL.services.grua.Battery;
 import SIIL.services.grua.Charger;
@@ -294,7 +295,6 @@ public class LoteGrua
                 continue;
             }
             
-            
             if(row.size() < 5) 
             {
                 counFailsResults++;
@@ -484,7 +484,7 @@ public class LoteGrua
                     if(!strTitemBaterry.isEmpty() && !strTitemBaterry.isBlank() && type != Titem.Type.UNKNOW)
                     {
                         if(type == Titem.Type.BATTERY)
-                        {                            
+                        {
                             battery = new Battery(-1);
                             ret = battery.search(dbserver.getConnection(), strTitem.trim());
                             if(battery.getID() > 0)
@@ -920,8 +920,8 @@ public class LoteGrua
         Resumov resumov;
         String strTitem;
         Titem.Type type;
-        Battery battery;
-        Charger charger;
+        Battery battery,addBattery;
+        Charger charger,addCahrger;
         Forklift forklift;
         Titem titem;
         Return ret;
@@ -938,11 +938,14 @@ public class LoteGrua
         String strBattery;
         String strCharger;
         String strSerie;
+        String strTitemCharger;
         for(List<String> row : result)
         {
             battery = null;
             charger = null;
             forklift = null;
+            addBattery = null;
+            addCahrger = null;
             titem = null;
             //System.out.println("row.size() = " + row.size());
             
@@ -958,7 +961,7 @@ public class LoteGrua
                 {
                     forklift = new Forklift(-1);
                     ret = forklift.searchForklift(dbserver, strTitem);
-                    if(ret.isFlag())
+                    if(forklift.getID() > 0)
                     {
                         forklift.downNumber(dbserver.getConnection());
                         forklift.downSerie(dbserver);
@@ -982,12 +985,11 @@ public class LoteGrua
             {
                 if(row.size() >= 5)
                 {
-                    strBattery = row.get(5).trim();
-                    if(!strBattery.isEmpty() && !strBattery.isBlank())
+                    if(!strTitem.isEmpty() && !strTitem.isBlank())
                     {
                         battery = new Battery(-1);
-                        ret = battery.search(dbserver.getConnection(), strBattery);
-                        if(ret.isFlag())
+                        ret = battery.search(dbserver.getConnection(), strTitem);
+                        if(battery.getID() > 0)
                         {
                             battery.downNumber(dbserver.getConnection());
                             battery.downSerie(dbserver);
@@ -1020,7 +1022,7 @@ public class LoteGrua
                     {
                         charger = new Charger(-1);
                         ret = charger.search(dbserver.getConnection(), strTitem.trim());
-                        if(ret.isFlag())
+                        if(charger.getID() > 0)
                         {
                             charger.downNumber(dbserver.getConnection());
                             charger.downSerie(dbserver);
@@ -1048,9 +1050,9 @@ public class LoteGrua
             else
             {
                 continue;
-            } 
+            }
             
-            System.out.println("Prev 1 " + titem.getNumber());
+            System.out.println("Prev 1 " + strTitem);
             if(titem == null) continue;
             
             System.out.println("Prev 2 " + titem.getNumber());
@@ -1068,17 +1070,16 @@ public class LoteGrua
             {
                 if(row.size() >= 5)
                 {
-                    strForklift = row.get(9).trim();
                     type = Titem.checkType(strTitem);
-                    if(!strForklift.isEmpty() && !strForklift.isBlank() && type != Titem.Type.UNKNOW)
+                    if(!strTitem.isEmpty() && !strTitem.isBlank() && type != Titem.Type.UNKNOW)
                     {
                         if(type == Titem.Type.FORKLIFT)
                         {
                             if(forklift.getID() > 0)
                             {
-                                forkFlow = new Flow(forklift.getID());
-                                strSerie = forkFlow.getSerie() == null? "" : forkFlow.getSerie();
-                                forkFlow.selectForkliftRandom(dbserver);
+                                forkFlow = new Flow(-1);
+                                //strSerie = forkFlow.getSerie() == null? "" : forkFlow.getSerie();
+                                forkFlow.selectItemNumber(dbserver,strTitem);
                                 if(forkFlow.getID() > 0) 
                                 {
                                     if(forkFlow.downItem(dbserver))
@@ -1088,10 +1089,40 @@ public class LoteGrua
                                         forkFlow.getItem().downModel(dbserver);
                                         forkFlow.getItem().downSerie(dbserver);
                                     }
+                                    else
+                                    {
+                                        System.out.println("Fallo la descarga del item " + strTitem);
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    System.out.println("No se encontro en la base de datos " + strTitem);
+                                    continue;
                                 }
                             }
+                            else
+                            {
+                                System.out.println("No es un montacargas " + strTitem);
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            System.out.println("No es un montacargas " + strTitem);
+                            continue;
                         }
                     }
+                    else
+                    {
+                        System.out.println("Campo vacio " + strTitem);
+                        continue;
+                    }
+                }
+                else
+                {
+                    System.out.println("Tamano insuficiente " + strTitem);
+                    continue;
                 }
                 
                 if(row.size() >= 9)
@@ -1108,8 +1139,8 @@ public class LoteGrua
                             if(battery.getID() > 0)
                             {
                                 battFlow = new Flow(battery.getID());
-                                strSerie = battFlow.getSerie() == null? "" : battFlow.getSerie();
-                                battFlow.selectBatteryRandom(dbserver);
+                                //strSerie = battFlow.getSerie() == null? "" : battFlow.getSerie();
+                                battFlow.selectItemNumber(dbserver,strBattery);
                                 if(battFlow.getID() > 0) 
                                 {
                                     if(battFlow.downItem(dbserver))
@@ -1120,6 +1151,10 @@ public class LoteGrua
                                         battFlow.getItem().downSerie(dbserver);
                                     }
                                 }
+                                else
+                                {
+                                    battFlow = null;
+                                }
                             }
                         }
                     }
@@ -1127,7 +1162,7 @@ public class LoteGrua
                 
                 if(row.size() >= 10)
                 {
-                    String strTitemCharger = row.get(10).trim();
+                    strTitemCharger = row.get(10).trim();
                     type = Titem.checkType(strTitemCharger);
                     if(!strTitemCharger.isEmpty() && !strTitemCharger.isBlank() && type != Titem.Type.UNKNOW)
                     {
@@ -1138,9 +1173,9 @@ public class LoteGrua
                             ret = charger.search(dbserver.getConnection(), strTitemCharger);
                             if(charger.getID() > 0)
                             {
-                                charFlow = new Flow(charger.getID());
-                                strSerie = charFlow.getSerie() == null? "" : charFlow.getSerie();
-                                charFlow.selectChargerRandom(dbserver);
+                                charFlow = new Flow(-1);
+                                //strSerie = charFlow.getSerie() == null? "" : charFlow.getSerie();
+                                charFlow.selectItemNumber(dbserver,strTitemCharger);
                                 if(charFlow.getID() > 0)
                                 {
                                     if(charFlow.downItem(dbserver))
@@ -1151,10 +1186,18 @@ public class LoteGrua
                                         charFlow.getItem().downSerie(dbserver);
                                     }
                                 }
+                                else
+                                {
+                                    charFlow = null;
+                                }
                             }
                         }
                     }
                 }
+            }
+            else
+            {
+                continue;
             }
             //System.out.println("");
             
@@ -1221,10 +1264,19 @@ public class LoteGrua
                         resumov.upNote(dbserver.getConnection(), strNote,null);
                     }
                 }
-            }
-           
-                
+            }           
         }
+        
+        try 
+        {
+            dbserver.commit();
+        }
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+        }
+        
         String message = "Hoja de renta : " + countTotal;
         JOptionPane.showMessageDialog(null,message);
         

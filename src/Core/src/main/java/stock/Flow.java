@@ -760,6 +760,27 @@ public class Flow
             return false;
         }
     }
+    public Boolean selectItemNumber(Database db,String number) throws SQLException 
+    {
+        clean();
+        if(db == null)
+        {
+            return false;
+        }
+        String sql = "SELECT idFlow FROM "  + MYSQL_AVATAR_TABLE_ITEM + " WHERE number='" + number + "'";
+        System.out.println(sql);
+        ResultSet rs = db.query(sql);
+        if(rs.next())
+        {
+            this.id = rs.getInt(1);
+            return true;
+        }
+        else
+        {
+            this.id = -1;
+            return false;
+        }
+    }
     
     /**
      * Asigna un ID al azar

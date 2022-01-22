@@ -1104,7 +1104,7 @@ public class Resumov implements Vaultable
         sql = sql + ")";
         
         Statement stmt = connection.getConnection().createStatement();
-        //System.out.println(sql);
+        System.out.println(sql);
         int affected = stmt.executeUpdate(sql,Statement.RETURN_GENERATED_KEYS);        
         if(affected != 1)
         {
@@ -1327,7 +1327,7 @@ public class Resumov implements Vaultable
         String sql;
         ResultSet rs;
         sql = "SELECT id FROM  " + MYSQL_AVATAR_TABLE + " WHERE titemNumber = '" + titem.getNumber() + "'";
-        //System.out.println(sql);
+        System.out.println(sql);
         rs = db.query(sql);
         if(rs.next())
         {

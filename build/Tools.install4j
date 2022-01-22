@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="9.0.5" transformSequenceNumber="9">
   <directoryPresets config="C:/Users/Azael/Documents/develop/liis/build/vers" />
-  <application name="Tools SIIL" applicationId="4277-0445-2940-4314" mediaDir="C:/Users/Azael/Documents/develop/liis/build/vers" shortName="Tools" version="29.8.0" macVolumeId="9d07d50f5989a8ea">
+  <application name="Tools SIIL" applicationId="4277-0445-2940-4314" mediaDir="C:/Users/Azael/Documents/develop/liis/build/vers" shortName="Tools" version="29.10.0" macVolumeId="9d07d50f5989a8ea">
     <jreBundles jdkProviderId="AdoptOpenJDK" release="17/latest" />
   </application>
   <files>

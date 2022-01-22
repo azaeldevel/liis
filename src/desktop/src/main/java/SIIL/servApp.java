@@ -15,6 +15,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -1920,7 +1921,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
             Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
-        
+                
         try 
         {
             lote.loadActivos(dir+"\\lotegrua\\activos.csv");
@@ -1930,7 +1931,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
             Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
-        
+                
         try 
         {
             lote.loadMovements(dir + "\\lotegrua\\movements.csv");
@@ -1940,7 +1941,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
             Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
-        
+                
         try 
         {
             lote.loadResumov(dir+"\\lotegrua\\movements.csv");
@@ -1950,11 +1951,11 @@ public class servApp extends javax.swing.JFrame implements Runnable
             Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
-        
+              
         try 
         {
             dbserver.commit();
-        } 
+        }
         catch (SQLException ex) 
         {
             Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
