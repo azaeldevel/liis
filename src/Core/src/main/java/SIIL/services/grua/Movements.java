@@ -49,6 +49,36 @@ public class Movements implements Searchable
     private List<Flow> movhequis;
     private Remision remision;
        
+    /**
+     * Genera una lista completa de todos/where los registros de movimentos
+     * @param connection
+     * @param ls
+     * @param where si no es null especifica el contenmido de la clausula where
+     * @param order si no es null, indica el contenido de la clausula order, de otra forma se ignora
+     * @param limit para un numero positivo selecciona la cantidad indicada, de otra forma selecciona la tabla completa. 
+     * @throws SQLException 
+     */
+    static public void list(Database connection, List<Movements> ls, String where, String order, int limit) throws SQLException
+    {
+        if(connection == null) throw new InvalidParameterException("Connection is null.");
+        
+        String sql = "SELECT id FROM " + MYSQL_AVATAR_TABLE ;
+        if(where != null) sql += " WHERE " + where;
+        if(order != null) sql += " ORDER BY " + order;
+        if(limit > 0) sql += " LIMIT " + limit;
+        
+        System.out.println(sql);
+        
+        Statement stmt = connection.getConnection().createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        Movements mov;
+        while(rs.next())
+        {
+            mov = new Movements(rs.getInt(1));
+            ls.add(mov);
+        }
+    }
+    
     public Return cancel(Database connection, Office office, Date date, String folio) throws SQLException
     {
         if(connection == null)

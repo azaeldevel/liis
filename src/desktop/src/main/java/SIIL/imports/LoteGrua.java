@@ -694,6 +694,22 @@ public class LoteGrua
                     
         }
         
+        
+        /*try 
+        {
+            //System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy",englishLocale);
+            date = sdf.parse(strDate);
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
+            //System.out.println(sdf.format(date));
+            return date;
+        } 
+        catch (ParseException ex) 
+        {
+                    
+        }*/
+        
         try 
         {
             //System.out.println(strDate);
@@ -741,6 +757,22 @@ public class LoteGrua
         {
                     
         }
+        
+                
+        /*try 
+        {
+            //System.out.println(strDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy",spanishLocale);
+            date = sdf.parse(strDate);
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(date));
+            //System.out.println(sdf.format(date));
+            return date;
+        } 
+        catch (ParseException ex) 
+        {
+                    
+        }*/
         
         try 
         {

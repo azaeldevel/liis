@@ -6,6 +6,7 @@ import SIIL.Server.Company;
 import SIIL.Server.Database;
 import SIIL.core.Office;
 import core.PlainTitem;
+import core.Searchable;
 import database.mysql.sales.Remision;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -574,6 +575,98 @@ public class MovementsTest
     public void testUpCompany() 
     {
         System.out.println("upCompany");
+    }
+
+    /**
+     * Test of list method, of class Movements.
+     */
+    @Test
+    public void testList() throws Exception 
+    {
+        SIIL.core.config.Server serverConfig = new SIIL.core.config.Server();        
+        Database dbserver = null;
+        try 
+        {
+            serverConfig.loadFile(new java.io.File(".").getCanonicalPath());
+            dbserver = new Database(serverConfig);
+        } 
+        catch (SQLException | IOException | ParserConfigurationException | SAXException ex) 
+        {
+            Logger.getLogger(CatalogoTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail(ex.getMessage());
+        } 
+        catch (ClassNotFoundException ex) 
+        {
+            Logger.getLogger(MovementsTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Database connection = null;
+        List<Movements> ls = new ArrayList<>();
+        String where = "";
+        Movements.list(dbserver, ls, null, null, 0);        
+        for (Movements mov : ls) 
+        {
+            System.out.println("id = " + mov.getID());
+        }
+        
+        System.out.println("Size : " + ls.size());
+        if(ls.size() == 1000) System.out.println("Parece que el servidor esta limitando la longitud del resultado");
+    }
+
+    /**
+     * Test of cancel method, of class Movements.
+     */
+    @Test
+    public void testCancel() throws Exception {
+    }
+
+    /**
+     * Test of download method, of class Movements.
+     */
+    @Test
+    public void testDownload() throws Exception {
+    }
+
+    /**
+     * Test of search method, of class Movements.
+     */
+    @Test
+    public void testSearch() throws Exception {
+    }
+
+    /**
+     * Test of insert method, of class Movements.
+     */
+    @Test
+    public void testInsert_6args_1() throws Exception {
+    }
+
+    /**
+     * Test of insert method, of class Movements.
+     */
+    @Test
+    public void testInsert_6args_2() throws Exception {
+    }
+
+    /**
+     * Test of insert method, of class Movements.
+     */
+    @Test
+    public void testInsert_5args() throws Exception {
+    }
+
+    /**
+     * Test of getIdentificator method, of class Movements.
+     */
+    @Test
+    public void testGetIdentificator() {
+    }
+
+    /**
+     * Test of getBrief method, of class Movements.
+     */
+    @Test
+    public void testGetBrief() {
     }
     
 }
