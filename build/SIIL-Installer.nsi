@@ -2,7 +2,7 @@
 
 !define NAME "SIIL"
 !define JAR "desk.jar"
-!define VERSION "29.10.0"
+!define VERSION "29.10.1"
 !define PUBLISHER "Azael Reyes"
 !define WEBSITE "http://siil.com/"
 !define JRE_VERSION "17"
@@ -30,8 +30,6 @@ InstallDir $PROGRAMFILES64\${NAME}
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 
-;UninstPage uninstConfirm
-;UninstPage instfiles
 
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "Spanish"
@@ -42,32 +40,9 @@ LangString JavaInstall ${LANG_SPANISH} "${NAME} necesita Java Runtime Environmen
 LangString Uninstall ${LANG_ENGLISH} "Uninstall"
 LangString Uninstall ${LANG_SPANISH} "Desintaldor"
 
-Function GetJRE
-  MessageBox MB_YESNO|MB_ICONQUESTION $(JavaInstall) IDNO done
-  StrCpy $2 "$TEMP\Java Runtime Environment.exe"
-  nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2 
-  Pop $R0
-  StrCmp $R0 "success" +3
-  MessageBox MB_OK "Error: $R0"
-  Quit
-  ExecWait "$2"
-  Delete "$2"
-  done:
-FunctionEnd
-
-Function DetectJRE
-  ${GetFileVersion} "$SYSDIR\javaw.exe" $R1
-  ${VersionCompare} ${JRE_VERSION} $R1 $R2
-  StrCmp $R2 0 done
-  StrCmp $R2 2 done
-  Call GetJRE
-  done:
-FunctionEnd
 
 Section
   SetOutPath $INSTDIR\
-  
-;  Call DetectJRE
   
   File src\release\desk.jar
   File src\release\config.jaas
@@ -82,19 +57,6 @@ Section
   CreateShortCut "$SMPROGRAMS\${NAME}\$(Uninstall).lnk" "$INSTDIR\Uninstall.exe" 
   CreateShortCut "$SMPROGRAMS\${NAME}\Tools.lnk" "javaw.exe" " -jar ${JAR} tool.ico"
 
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayName" "${NAME}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayVersion" "${VERSION}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayIcon" "$INSTDIR\${NAME}.ico"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "UninstallString" "$INSTDIR\Uninstall.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "Publisher" "${PUBLISHER}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "HelpLink" "${WEBSITE}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "URLInfoAbout" "${WEBSITE}"
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "NoRepair" 1
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "InstallLocation" "$INSTDIR"
-  ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
-  IntFmt $0 "0x%08X" $0
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "EstimatedSize" $0
 SectionEnd
 
 Section "Uninstall"
@@ -110,5 +72,5 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\${NAME}\$(Uninstall).lnk"
   Delete "$SMPROGRAMS\${NAME}\Tools.lnk"
   RMDir "$SMPROGRAMS\${NAME}"
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}"
+
 SectionEnd
