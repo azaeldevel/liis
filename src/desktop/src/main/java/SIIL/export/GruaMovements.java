@@ -24,16 +24,22 @@ public class GruaMovements
         List<Movements> ls = new ArrayList<>();        
         Movements.list(dbserver, ls, null, " id desc ", 0);         
         FileWriter csv = new FileWriter(file.getAbsolutePath());
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
         for(Movements mov : ls)
         {
             mov.downloadExport(dbserver);
-            csv.write(Integer.toString(mov.getID()));
+            csv.write(Integer.toString(mov.getID()));    
+            csv.write(",");
+            csv.write(mov.getFolio());        
             csv.write(",");
             csv.write(dateFormat.format(mov.getFhMov()));
+            csv.write(",");
+            csv.write(mov.getCompany().getName());
             csv.write("\n");
             //System.out.println("id = " + mov.getID());
         }
+        
         csv.close();
     }
 }

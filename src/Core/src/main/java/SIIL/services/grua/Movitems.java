@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import process.Return;
 import stock.Flow;
@@ -22,6 +23,37 @@ public class Movitems
     private static final String MYSQL_AVATAR_TABLE = "Movtitems";
     private static final String MYSQL_AVATAR_TABLE_BACKWARD_BD = "bc.tj";
 
+    private int id;
+    
+    
+    public int getID()
+    {
+        return id;
+    }
+    
+    public Movitems()
+    {
+    }
+    public Movitems(int id)
+    {
+        this.id = id;
+    }
+            
+            
+    public static List<Movitems> select(Database connection, Movements mov) throws SQLException
+    {
+        List<Movitems> list = new ArrayList<>();
+        
+        String sql = "SELECT id WHERE mov = " + mov.getID();        
+        Statement stmt = connection.getConnection().createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        while(rs.next())
+        {
+            list.add(new Movitems(rs.getInt(1)));
+        }
+        
+        return list;
+    }
     
     /**
      * 

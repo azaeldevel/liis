@@ -76,7 +76,7 @@ public class Movements implements Searchable
         if(order != null) sql += " ORDER BY " + order;
         if(limit > 0) sql += " LIMIT " + limit;
         
-        System.out.println(sql);
+        //System.out.println(sql);
         
         Statement stmt = connection.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(sql);
