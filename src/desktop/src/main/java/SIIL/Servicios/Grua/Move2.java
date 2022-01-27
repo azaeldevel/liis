@@ -323,7 +323,6 @@ public class Move2 extends javax.swing.JPanel
         tbList.setComponentPopupMenu(mnMain);
         jScrollPane3.setViewportView(tbList);
 
-        chResumov.setSelected(true);
         chResumov.setText("Agregar a Hoja de Renta");
 
         txSA.addKeyListener(new java.awt.event.KeyAdapter() {

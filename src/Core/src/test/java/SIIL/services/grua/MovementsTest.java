@@ -602,8 +602,7 @@ public class MovementsTest
         
         Database connection = null;
         List<Movements> ls = new ArrayList<>();
-        String where = "";
-        Movements.list(dbserver, ls, null, null, 0);        
+        Movements.list(dbserver, ls, null, " id desc ", 0);        
         for (Movements mov : ls) 
         {
             System.out.println("id = " + mov.getID());

@@ -48,7 +48,16 @@ public class Movements implements Searchable
     private Person creator;
     private List<Flow> movhequis;
     private Remision remision;
+    private boolean imported;
        
+    
+    
+    public boolean getImported()
+    {
+        return imported;
+    }
+    
+    
     /**
      * Genera una lista completa de todos/where los registros de movimentos
      * @param connection
@@ -654,6 +663,24 @@ public class Movements implements Searchable
         String sql = "UPDATE  " + MYSQL_AVATAR_TABLE + " SET compNumber='" + company.getNumber() + "' WHERE id=" + id;
         //System.out.println(sql);
         Statement stmt = connection.createStatement();        
+        return new Return(true, (Integer)stmt.executeUpdate(sql));
+    }
+    
+        
+    public Return<Integer> upImported(Database db, boolean imported) throws SQLException 
+    {
+        if(id < 1)
+        {
+            return new Return(false,"ID invalido."); 
+        }
+        if(db == null)
+        {
+            return new Return<>(false,"connection is null.");
+        }
+        
+        String sql = "UPDATE  " + MYSQL_AVATAR_TABLE + " SET imported=" + imported + " WHERE id=" + id;
+        //System.out.println(sql);
+        Statement stmt = db.getConnection().createStatement();        
         return new Return(true, (Integer)stmt.executeUpdate(sql));
     }
 

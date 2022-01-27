@@ -6,6 +6,7 @@ import SIIL.Servicios.Orden.Read;
 import SIIL.client.sales.Enterprise;
 import session.User;
 import SIIL.desktop.auth.ToolLoginModule;
+import SIIL.export.GruaMovements;
 import SIIL.imports.LoteGrua;
 import SIIL.services.grua.Resumov;
 import SIIL.sockets.messages.ClosedApplication;
@@ -14,6 +15,7 @@ import com.galaxies.andromeda.util.Texting.Message;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -529,6 +532,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         mnMainGruaResumov = new javax.swing.JMenuItem();
         mnMainGruaMove = new javax.swing.JMenuItem();
         mnMainGruaEquipo = new javax.swing.JMenuItem();
+        mnMainExport = new javax.swing.JMenuItem();
         mnRef = new javax.swing.JMenu();
         mnComprasOrden = new javax.swing.JMenuItem();
         mnServCotRef = new javax.swing.JMenuItem();
@@ -637,6 +641,14 @@ public class servApp extends javax.swing.JFrame implements Runnable
             }
         });
         mnGrua.add(mnMainGruaEquipo);
+
+        mnMainExport.setText("Exportar");
+        mnMainExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnMainExportActionPerformed(evt);
+            }
+        });
+        mnGrua.add(mnMainExport);
 
         mnMain.add(mnGrua);
 
@@ -1963,6 +1975,41 @@ public class servApp extends javax.swing.JFrame implements Runnable
         }
     }//GEN-LAST:event_mnLoteGruaActionPerformed
 
+    private void mnMainExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnMainExportActionPerformed
+        SIIL.core.config.Server serverConfig = new SIIL.core.config.Server();        
+        Database dbserver = null;
+        try 
+        {
+            serverConfig.loadFile(new java.io.File(".").getCanonicalPath());
+            dbserver = new Database(serverConfig);
+        }
+        catch (ClassNotFoundException | SQLException | IOException | ParserConfigurationException | SAXException ex) 
+        {
+            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+            return;
+        }
+        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        GruaMovements export = new GruaMovements();
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) 
+        {
+            File fileToSave = fileChooser.getSelectedFile();
+            System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+            try 
+            {
+                export.generate(fileToSave,dbserver);
+            } 
+            catch (SQLException | IOException ex) 
+            {
+                Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(this,"Datos guardados.");
+        }
+    }//GEN-LAST:event_mnMainExportActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2027,6 +2074,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
     private javax.swing.JMenuItem mnLoteGrua;
     private javax.swing.JMenuItem mnMailFact;
     private javax.swing.JMenuBar mnMain;
+    private javax.swing.JMenuItem mnMainExport;
     private javax.swing.JMenuItem mnMainGruaEquipo;
     private javax.swing.JMenuItem mnMainGruaEquipo2;
     private javax.swing.JMenuItem mnMainGruaMove;

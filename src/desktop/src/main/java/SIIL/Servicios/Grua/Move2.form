@@ -422,7 +422,6 @@
     </Container>
     <Component class="javax.swing.JCheckBox" name="chResumov">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Agregar a Hoja de Renta"/>
       </Properties>
     </Component>

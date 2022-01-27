@@ -42,6 +42,13 @@ public class Resumov implements Vaultable
     private Flow titem;
     private Mina mina;
     private core.bobeda.Business poFile;
+    private boolean imported;
+    
+    
+    public boolean getImported()
+    {
+        return imported;
+    }
     
     public Boolean downPOFile(Database db) throws SQLException 
     {
@@ -1466,4 +1473,21 @@ public class Resumov implements Vaultable
             throw new FailResultOperationException("Se afectaron '" + retUp + "' registros ");
         }
     }    
+    
+    public Return<Integer> upImported(Database db, boolean imported) throws SQLException 
+    {
+        if(id < 1)
+        {
+            return new Return(false,"ID invalido."); 
+        }
+        if(db == null)
+        {
+            return new Return<>(false,"connection is null.");
+        }
+        
+        String sql = "UPDATE  " + MYSQL_AVATAR_TABLE + " SET imported=" + imported + " WHERE id=" + id;
+        //System.out.println(sql);
+        Statement stmt = db.getConnection().createStatement();        
+        return new Return(true, (Integer)stmt.executeUpdate(sql));
+    }
 }

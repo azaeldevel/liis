@@ -1,7 +1,14 @@
 
 package SIIL.export;
 
+import SIIL.Server.Database;
 import SIIL.services.grua.Movements;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -10,10 +17,15 @@ import SIIL.services.grua.Movements;
 public class GruaMovements 
 {
     
-    public void generate()
+    public void generate(File file,Database dbserver) throws SQLException, IOException
     {
-        Movements mov = new Movements(-1);
-        
-        
+        List<Movements> ls = new ArrayList<>();        
+        Movements.list(dbserver, ls, null, " id desc ", 0);         
+        FileWriter csv = new FileWriter(file);
+        for(Movements mov : ls)
+        {
+            csv.write(mov.getID() + "\n");
+        }
+        csv.close();
     }
 }

@@ -547,6 +547,7 @@ public class LoteGrua
                 office = new Office(dbserver,1);
                 strFolio = row.get(0).isEmpty() || row.get(0).isBlank() ?  "0" : row.get(1);
                 ret = mov.insert(dbserver, office, date, strFolio, titems);
+                mov.upImported(dbserver, true);
                 if(!ret.isFlag())
                 {
                     System.out.println("Fallo de movimiento 1 en : " + idrow);
@@ -946,6 +947,7 @@ public class LoteGrua
             String[] values = line.split(COMMA_DELIMITER);
             result.add(Arrays.asList(values));
         }
+        Collections.reverse(result);
         
         Office office = new Office(dbserver,1);
         int countTotal = 0;
@@ -1164,8 +1166,6 @@ public class LoteGrua
                     if(!strBattery.isEmpty() && !strBattery.isBlank() && type == Titem.Type.BATTERY)
                     {
                         //System.out.print(", B : '" + strTitemBaterry + "'");
-                        if(type == Titem.Type.BATTERY)
-                        {
                             battery = new Battery(-1);
                             ret = battery.search(dbserver.getConnection(), strBattery);
                             if(battery.getID() > 0)
@@ -1188,7 +1188,6 @@ public class LoteGrua
                                     battFlow = null;
                                 }
                             }
-                        }
                     }
                 }
                 
@@ -1281,6 +1280,7 @@ public class LoteGrua
                 }
                 countTotal++;
             }
+            resumov.upImported(dbserver, true);
             if(row.size() >= 14)
             {
                 strNote = row.get(13);
