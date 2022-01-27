@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +23,16 @@ public class GruaMovements
     {
         List<Movements> ls = new ArrayList<>();        
         Movements.list(dbserver, ls, null, " id desc ", 0);         
-        FileWriter csv = new FileWriter(file);
+        FileWriter csv = new FileWriter(file.getAbsolutePath());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         for(Movements mov : ls)
         {
-            csv.write(mov.getID() + "\n");
+            mov.downloadExport(dbserver);
+            csv.write(Integer.toString(mov.getID()));
+            csv.write(",");
+            csv.write(dateFormat.format(mov.getFhMov()));
+            csv.write("\n");
+            //System.out.println("id = " + mov.getID());
         }
         csv.close();
     }

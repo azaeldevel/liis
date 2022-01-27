@@ -236,11 +236,17 @@ public class servApp extends javax.swing.JFrame implements Runnable
         {
             mnMainGruaMove.setVisible(true);
             mnMainGruaMove.setEnabled(true);
+            
+            mnMainExport.setVisible(true);
+            mnMainExport.setEnabled(true);
         }
         else
         {
             mnMainGruaMove.setVisible(false);
             mnMainGruaMove.setEnabled(false);
+            
+            mnMainExport.setVisible(false);
+            mnMainExport.setEnabled(false);
         }
         if(cred.acces(dbserver,"Purchase.CR.R"))
         {
@@ -643,6 +649,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         mnGrua.add(mnMainGruaEquipo);
 
         mnMainExport.setText("Exportar");
+        mnMainExport.setEnabled(false);
         mnMainExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnMainExportActionPerformed(evt);

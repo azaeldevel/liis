@@ -135,6 +135,27 @@ public class Movements implements Searchable
         
         return false;
     }
+        
+    public boolean downloadExport(Database db) throws SQLException
+    {
+        String sql = "SELECT folio,fhMov,compNumber,tmov,uso,note FROM " + MYSQL_AVATAR_TABLE + " WHERE id = " + id;
+        //System.out.println(sql);
+        ResultSet rs = db.query(sql);
+        if(rs.next())
+        {
+            folio = rs.getString(1);
+            fhMov = rs.getDate(2);
+            company = new Enterprise(-1);
+            company.complete(db, rs.getString(3));
+            company.download(db);
+            tmov = rs.getString(4);
+            uso = new Uso(-1);
+            uso.selectCode(db, rs.getString(5));
+            note = rs.getString(5);
+        }
+        
+        return false;
+    }
     
     public static List<Searchable> search(Database dbserver,Office office,String text,boolean activeSA) throws SQLException
     {
