@@ -76,7 +76,7 @@ public class Movements implements Searchable
         if(order != null) sql += " ORDER BY " + order;
         if(limit > 0) sql += " LIMIT " + limit;
         
-        //System.out.println(sql);
+        System.out.println(sql);
         
         Statement stmt = connection.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(sql);
@@ -139,7 +139,7 @@ public class Movements implements Searchable
     public boolean downloadExport(Database db) throws SQLException
     {
         String sql = "SELECT folio,fhMov,compNumber,tmov,uso,note FROM " + MYSQL_AVATAR_TABLE + " WHERE id = " + id;
-        //System.out.println(sql);
+        System.out.println(sql);
         ResultSet rs = db.query(sql);
         if(rs.next())
         {
@@ -151,6 +151,7 @@ public class Movements implements Searchable
             tmov = rs.getString(4);
             uso = new Uso(-1);
             uso.selectCode(db, rs.getString(5));
+            uso.download(db.getConnection());
             note = rs.getString(5);
         }
         

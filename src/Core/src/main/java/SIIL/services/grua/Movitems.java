@@ -24,6 +24,10 @@ public class Movitems
     private static final String MYSQL_AVATAR_TABLE_BACKWARD_BD = "bc.tj";
 
     private int id;
+    private String marca;
+    private String modelo;
+    private String serie;
+    private String number;
     
     
     public int getID()
@@ -31,6 +35,23 @@ public class Movitems
         return id;
     }
     
+    public String getMarca()
+    {
+        return marca;
+    }
+    public String getModelo()
+    {
+        return modelo;
+    }
+    public String getSerie()
+    {
+        return marca;
+    }
+    public String getNumber()
+    {
+        return number;
+    }
+        
     public Movitems()
     {
     }
@@ -44,8 +65,9 @@ public class Movitems
     {
         List<Movitems> list = new ArrayList<>();
         
-        String sql = "SELECT id WHERE mov = " + mov.getID();        
+        String sql = "SELECT id FROM " + MYSQL_AVATAR_TABLE + " WHERE mov = " + mov.getID();        
         Statement stmt = connection.getConnection().createStatement();
+        System.out.println(sql);
         ResultSet rs = stmt.executeQuery(sql);
         while(rs.next())
         {
@@ -295,5 +317,31 @@ public class Movitems
 
     private void clean() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public boolean download(Database connection) throws SQLException 
+    {
+        if(connection == null) throw new InvalidParameterException("Connection is null.");
+        
+        String sql = "SELECT marca,modelo,serie,numeco FROM  " + MYSQL_AVATAR_TABLE + " where id = " + id;
+        Statement stmt = connection.getConnection().createStatement();
+        System.out.println(sql);
+        ResultSet rs = stmt.executeQuery(sql);
+        if(rs.next())
+        {
+            marca = rs.getString(1);
+            modelo = rs.getString(2);
+            serie = rs.getString(3);
+            number = rs.getString(4);
+            return true;
+        }
+        else
+        {
+            marca = "";
+            modelo = "";
+            serie = "";
+            number = "";
+            return false;
+        }        
     }
 }
