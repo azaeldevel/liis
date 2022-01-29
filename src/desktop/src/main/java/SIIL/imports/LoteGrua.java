@@ -323,7 +323,7 @@ public class LoteGrua
             {
                 forklift = new Forklift(-1);
                 //System.out.println("Searching " + row.get(5).trim() + " ...");
-                forklift.searchForklift(dbserver, row.get(5).trim());
+                forklift.searchForklift(dbserver, strTitem);
                 if(forklift.getID() > 0)
                 {
                     forklift.downNumber(dbserver.getConnection());
@@ -333,6 +333,7 @@ public class LoteGrua
                 }
                 else
                 {
+                    /*
                     forklift.insert(dbserver.getConnection(), row.get(5).trim(), "Importacion Enero/22", Forklift.Import.NoImport, false, "");    
                     if(row.get(6).isEmpty() || row.get(6).isBlank()) forklift.upMake(dbserver.getConnection(), row.get(6).trim());
                     if(row.get(7).isEmpty() || row.get(7).isBlank()) forklift.upModel(dbserver.getConnection(), row.get(7).trim());
@@ -341,6 +342,8 @@ public class LoteGrua
                     forklift.downSerie(dbserver);
                     forklift.downMake(dbserver.getConnection());
                     forklift.downModel(dbserver);
+                    */
+                    System.out.println("No se encontro : " + strTitem);
                 }
             }
             else if(type == Titem.Type.BATTERY)
@@ -361,6 +364,7 @@ public class LoteGrua
                         }
                         else
                         {
+                            /*
                             battery.insert(dbserver.getConnection(), row.get(5).trim(), "Importacion Enero/22", Forklift.Import.NoImport, false, "");
                             if(!row.get(6).isEmpty() || !row.get(6).isBlank()) battery.upMake(dbserver.getConnection(), row.get(6).trim());
                             if(!row.get(7).isEmpty() || !row.get(7).isBlank()) battery.upModel(dbserver.getConnection(), row.get(7).trim());
@@ -368,7 +372,9 @@ public class LoteGrua
                             battery.downNumber(dbserver.getConnection());
                             battery.downSerie(dbserver);
                             battery.downMake(dbserver.getConnection());
-                            battery.downModel(dbserver);    
+                            battery.downModel(dbserver);  
+                            */
+                            System.out.println("No se encontro : " + strTitem);
                         }
                     }
                 }
@@ -390,6 +396,7 @@ public class LoteGrua
                         }
                         else
                         {
+                            /*
                             charger.insert(dbserver.getConnection(), row.get(5).trim(), "Importacion Enero/22", Forklift.Import.NoImport, false, "");
                             if(row.get(6).isEmpty() || row.get(6).isBlank()) charger.upMake(dbserver.getConnection(), row.get(6).trim());
                             if(row.get(7).isEmpty() || row.get(7).isBlank()) charger.upModel(dbserver.getConnection(), row.get(7).trim());
@@ -398,6 +405,8 @@ public class LoteGrua
                             charger.downSerie(dbserver);
                             charger.downMake(dbserver.getConnection());
                             charger.downModel(dbserver);
+                            */
+                            System.out.println("No se encontro : " + strTitem);
                         }
                     }
                 }
@@ -548,19 +557,19 @@ public class LoteGrua
                 strFolio = row.get(0).isEmpty() || row.get(0).isBlank() ?  "0" : row.get(1);
                 ret = mov.insert(dbserver, office, date, strFolio, titems);
                 mov.upImported(dbserver, true);
-                if(!ret.isFlag())
+                /*if(!ret.isFlag())
                 {
                     System.out.println("Fallo de movimiento 1 en : " + idrow);
                     counFailsResults++;
                     continue;
-                }
+                }*/
                 ret = mov.upCompany(dbserver.getConnection(), enterprisies.get(0));
-                if(!ret.isFlag())
+                /*if(!ret.isFlag())
                 {
                     System.out.println("Fallo de movimiento 2 : " + idrow);
                     counFailsResults++;
                     continue;
-                }
+                }*/
                 strUso = getStringUso(row.get(15));
                 if(!strUso.isEmpty() && !strUso.isBlank() )
                 {
@@ -578,7 +587,7 @@ public class LoteGrua
                     }
                 }
                 if(row.size() >= 14)
-                { 
+                {
                     strNote = row.get(13);
                     if(!strNote.isBlank() && !strNote.isEmpty())
                     {

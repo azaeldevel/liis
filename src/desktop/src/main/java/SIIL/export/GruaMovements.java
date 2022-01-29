@@ -7,7 +7,6 @@ import SIIL.services.grua.Charger;
 import SIIL.services.grua.Forklift;
 import SIIL.services.grua.Movements;
 import SIIL.services.grua.Movitems;
-import SIIL.services.grua.Uso;
 import database.mysql.stock.Titem;
 import java.io.File;
 import java.io.FileWriter;
