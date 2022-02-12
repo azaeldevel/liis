@@ -344,6 +344,7 @@ public class LoteGrua
                     forklift.downModel(dbserver);
                     */
                     System.out.println("No se encontro : " + strTitem);
+                    continue;
                 }
             }
             else if(type == Titem.Type.BATTERY)
@@ -375,6 +376,7 @@ public class LoteGrua
                             battery.downModel(dbserver);  
                             */
                             System.out.println("No se encontro : " + strTitem);
+                            continue;
                         }
                     }
                 }
@@ -407,16 +409,15 @@ public class LoteGrua
                             charger.downModel(dbserver);
                             */
                             System.out.println("No se encontro : " + strTitem);
+                            continue;
                         }
                     }
                 }
             }
             
             
-            date = convertDate(row.get(0).trim());
-              
-            titems = new ArrayList<>();
-            
+            date = convertDate(row.get(0).trim());              
+            titems = new ArrayList<>();            
             if(type == Titem.Type.FORKLIFT)
             {
                 if(forklift.getID() > 0)
@@ -554,22 +555,27 @@ public class LoteGrua
             {
                 mov = new Movements(-1);
                 office = new Office(dbserver,1);
-                strFolio = row.get(0).isEmpty() || row.get(0).isBlank() ?  "0" : row.get(1);
+                strFolio = (row.get(0).isEmpty() || row.get(0).isBlank()) ?  "0" : row.get(1);
                 ret = mov.insert(dbserver, office, date, strFolio, titems);
                 mov.upImported(dbserver, true);
-                /*if(!ret.isFlag())
+                /*
+                if(!ret.isFlag())
                 {
                     System.out.println("Fallo de movimiento 1 en : " + idrow);
                     counFailsResults++;
                     continue;
-                }*/
+                }
+                */
                 ret = mov.upCompany(dbserver.getConnection(), enterprisies.get(0));
-                /*if(!ret.isFlag())
+                /*
+                if(!ret.isFlag())
                 {
                     System.out.println("Fallo de movimiento 2 : " + idrow);
                     counFailsResults++;
                     continue;
-                }*/
+                }
+                */
+                if(row.size() <= 15) continue;
                 strUso = getStringUso(row.get(15));
                 if(!strUso.isEmpty() && !strUso.isBlank() )
                 {
@@ -612,6 +618,7 @@ public class LoteGrua
                 else
                 {
                     System.out.println("Tipo desconocido : " + row.get(4));
+                    continue;
                 }
                 
                 counMovs++;

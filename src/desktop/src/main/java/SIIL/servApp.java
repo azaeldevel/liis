@@ -2012,6 +2012,8 @@ public class servApp extends javax.swing.JFrame implements Runnable
             catch (SQLException | IOException ex) 
             {
                 Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             }
             JOptionPane.showMessageDialog(this,"Datos guardados.");
         }
