@@ -516,7 +516,7 @@ public class LoteGrua
                         {
                             forkFlow.getItem().downNumber(dbserver.getConnection());
                             forkFlow.getItem().downMake(dbserver.getConnection());
-                            System.out.println("marca : " + forkFlow.getItem().getMake());
+                            //System.out.println("marca : " + forkFlow.getItem().getMake());
                             forkFlow.getItem().downModel(dbserver);
                             forkFlow.getItem().downSerie(dbserver);
                         }
@@ -537,7 +537,7 @@ public class LoteGrua
                         {
                             battFlow.getItem().downNumber(dbserver.getConnection());
                             battFlow.getItem().downMake(dbserver.getConnection());
-                            System.out.println("marca : " + battFlow.getItem().getMake());
+                            //System.out.println("marca : " + battFlow.getItem().getMake());
                             battFlow.getItem().downModel(dbserver);
                             battFlow.getItem().downSerie(dbserver);
                         }
@@ -559,7 +559,7 @@ public class LoteGrua
                         {
                             charFlow.getItem().downNumber(dbserver.getConnection());
                             charFlow.getItem().downMake(dbserver.getConnection());
-                            System.out.println("marca : " + charFlow.getItem().getMake());
+                            //System.out.println("marca : " + charFlow.getItem().getMake());
                             charFlow.getItem().downModel(dbserver);
                             charFlow.getItem().downSerie(dbserver);
                         }
@@ -596,7 +596,7 @@ public class LoteGrua
                                     {
                                         battFlow.getItem().downNumber(dbserver.getConnection());
                                         battFlow.getItem().downMake(dbserver.getConnection());
-                                        System.out.println("marca : " + battFlow.getItem().getMake());
+                                        //System.out.println("marca : " + battFlow.getItem().getMake());
                                         battFlow.getItem().downModel(dbserver);
                                         battFlow.getItem().downSerie(dbserver);
                                     }
@@ -628,7 +628,7 @@ public class LoteGrua
                                     {
                                         charFlow.getItem().downNumber(dbserver.getConnection());
                                         charFlow.getItem().downMake(dbserver.getConnection());
-                                        System.out.println("marca : " + charFlow.getItem().getMake());
+                                        //System.out.println("marca : " + charFlow.getItem().getMake());
                                         charFlow.getItem().downModel(dbserver);
                                         charFlow.getItem().downSerie(dbserver);
                                     }
@@ -707,7 +707,7 @@ public class LoteGrua
                 }
                 else
                 {
-                    System.out.println("Tipo desconocido : " + row.get(4));
+                    System.out.println("Movimiento desconocido : " + row.get(4));
                     continue;
                 }
                 
