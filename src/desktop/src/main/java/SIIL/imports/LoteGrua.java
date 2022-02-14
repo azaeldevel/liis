@@ -158,6 +158,91 @@ public class LoteGrua
         return true;
     }
     
+    public boolean loadActivos2(String activos) throws FileNotFoundException, IOException, SQLException
+    {
+        BufferedReader br = new BufferedReader(new FileReader(activos));
+        
+        List<List<String>> result = new ArrayList<>();
+        String line;
+        while ((line = br.readLine()) != null) 
+        {
+            String[] values = line.split(COMMA_DELIMITER);
+            result.add(Arrays.asList(values));
+        }
+        
+        Return ret;
+        Titem titem;
+        Forklift forklift;
+        Battery battery;
+        Charger charger;
+        String strTitem,strMarca,strModel,strSerie;
+        for(List<String> row : result)
+        {
+            ret = new Return(true,"Init..");
+            titem = null;
+            if(row.size() < 5) continue;
+            strTitem = row.get(5);
+            if(strTitem.isEmpty() || strTitem.isBlank()) continue;
+            if(Titem.isExist(dbserver, strTitem) <= 0)
+            {
+                switch(Titem.checkType(strTitem))
+                {
+                case FORKLIFT:
+                        forklift = new Forklift(-1);
+                        ret = forklift.insert(dbserver.getConnection(),strTitem,"#",Import.NoImport,false,"#");
+                        titem = forklift;
+                    break;
+                case BATTERY:
+                        battery = new Battery(-1);
+                        ret = battery.insert(dbserver.getConnection(),strTitem,"#",Import.NoImport,false,"#");
+                        titem = battery;
+                    break;
+                case CHARGER:
+                        charger = new Charger(-1);
+                        ret = charger.insert(dbserver.getConnection(),strTitem,"#",Import.NoImport,false,"#");
+                        titem = charger;
+                    break;
+                    default :
+                        continue;
+                }
+                if(ret.isFail()) 
+                {
+                    System.out.println(ret.getMessage());
+                    return false;
+                }
+
+                strMarca = row.get(6);
+                if(strMarca.isEmpty() || strMarca.isBlank()) continue;                
+                ret = titem.upMake(dbserver.getConnection(), strMarca);
+                if(ret.isFail()) 
+                {
+                    System.out.println(ret.getMessage());
+                    return false;
+                }
+
+                strModel = row.get(7);
+                if(strModel.isEmpty() || strModel.isBlank()) continue;            
+                ret = titem.upModel(dbserver.getConnection(), strModel);
+                if(ret.isFail()) 
+                {
+                    System.out.println(ret.getMessage());
+                    return false;
+                }
+                
+                strSerie = row.get(8);
+                if(strSerie.isEmpty() || strSerie.isBlank()) continue;
+                ret = titem.upSerie(dbserver.getConnection(), strSerie);
+                if(ret.isFail()) 
+                {
+                    System.out.println(ret.getMessage());
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
     public boolean loadMovements(String movs) throws FileNotFoundException, IOException, SQLException
     {
         BufferedReader br = new BufferedReader(new FileReader(movs));
@@ -431,6 +516,7 @@ public class LoteGrua
                         {
                             forkFlow.getItem().downNumber(dbserver.getConnection());
                             forkFlow.getItem().downMake(dbserver.getConnection());
+                            System.out.println("marca : " + forkFlow.getItem().getMake());
                             forkFlow.getItem().downModel(dbserver);
                             forkFlow.getItem().downSerie(dbserver);
                         }
@@ -451,6 +537,7 @@ public class LoteGrua
                         {
                             battFlow.getItem().downNumber(dbserver.getConnection());
                             battFlow.getItem().downMake(dbserver.getConnection());
+                            System.out.println("marca : " + battFlow.getItem().getMake());
                             battFlow.getItem().downModel(dbserver);
                             battFlow.getItem().downSerie(dbserver);
                         }
@@ -472,6 +559,7 @@ public class LoteGrua
                         {
                             charFlow.getItem().downNumber(dbserver.getConnection());
                             charFlow.getItem().downMake(dbserver.getConnection());
+                            System.out.println("marca : " + charFlow.getItem().getMake());
                             charFlow.getItem().downModel(dbserver);
                             charFlow.getItem().downSerie(dbserver);
                         }
@@ -508,6 +596,7 @@ public class LoteGrua
                                     {
                                         battFlow.getItem().downNumber(dbserver.getConnection());
                                         battFlow.getItem().downMake(dbserver.getConnection());
+                                        System.out.println("marca : " + battFlow.getItem().getMake());
                                         battFlow.getItem().downModel(dbserver);
                                         battFlow.getItem().downSerie(dbserver);
                                     }
@@ -539,6 +628,7 @@ public class LoteGrua
                                     {
                                         charFlow.getItem().downNumber(dbserver.getConnection());
                                         charFlow.getItem().downMake(dbserver.getConnection());
+                                        System.out.println("marca : " + charFlow.getItem().getMake());
                                         charFlow.getItem().downModel(dbserver);
                                         charFlow.getItem().downSerie(dbserver);
                                     }

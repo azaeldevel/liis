@@ -1950,6 +1950,17 @@ public class servApp extends javax.swing.JFrame implements Runnable
             Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
+        
+           
+        try 
+        {
+            lote.loadActivos2(dir+"\\lotegrua\\movements.csv");
+        }
+        catch (IOException | SQLException ex) 
+        {
+            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+        }
                 
         try 
         {
