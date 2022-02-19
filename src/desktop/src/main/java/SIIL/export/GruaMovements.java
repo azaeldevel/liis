@@ -43,14 +43,13 @@ public class GruaMovements
         return actual;
     }
     
-    GruaMovements(Database server,File file) throws SQLException, IOException
+    GruaMovements(Database server,File file,String clause) throws SQLException, IOException
     {
         progress = 0;
         dbserver = server;
         ls = new ArrayList<>();        
-        Movements.list(dbserver, ls, null, " id desc ", 0);
-        
-        
+        Movements.list(dbserver, ls, clause, " id desc ", 0);
+                
         String ext = FilenameUtils.getExtension(file.getAbsolutePath().toString());
         String filename = file.getAbsolutePath();
         if(ext.isEmpty())

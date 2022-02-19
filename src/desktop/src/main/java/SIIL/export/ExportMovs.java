@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 public class ExportMovs extends javax.swing.JDialog {
 
     private GruaMovements export;
+    private String clause;
     
     /**
      * Creates new form ExportMovs
@@ -30,6 +31,11 @@ public class ExportMovs extends javax.swing.JDialog {
     public ExportMovs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();         
+    }
+    public ExportMovs(java.awt.Frame parent, boolean modal,String clause) {
+        super(parent, modal);
+        initComponents();       
+        this.clause = clause;
     }
 
     /**
@@ -119,7 +125,8 @@ public class ExportMovs extends javax.swing.JDialog {
         export = null;
         try 
         {
-            export = new GruaMovements(dbserver,fileToSave);
+            if(clause.isEmpty()) export = new GruaMovements(dbserver,fileToSave,null);
+            else export = new GruaMovements(dbserver,fileToSave,clause);
         } 
         catch (SQLException | IOException ex) 
         {
@@ -138,7 +145,7 @@ public class ExportMovs extends javax.swing.JDialog {
 
     public void loop()
     {
-        while(export.getProgress() < export.getSize())
+        while(export.getProgress() <= export.getSize())
         {
             progress.setValue(export.getProgress());
             lbText.setText(export.getActual());

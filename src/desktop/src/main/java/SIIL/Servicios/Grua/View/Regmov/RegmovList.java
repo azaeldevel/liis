@@ -3,6 +3,7 @@ package SIIL.Servicios.Grua.View.Regmov;
 
 
 import SIIL.Server.MySQL;
+import SIIL.export.ExportMovs;
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -53,6 +54,7 @@ public class RegmovList extends javax.swing.JInternalFrame
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jXTable1 = new org.jdesktop.swingx.JXTable();
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txSearch = new javax.swing.JTextField();
         txLength = new javax.swing.JTextField();
@@ -65,6 +67,17 @@ public class RegmovList extends javax.swing.JInternalFrame
         mnMainExportExcel = new javax.swing.JMenuItem();
 
         jScrollPane2.setViewportView(jXTable1);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setClosable(true);
         setMaximizable(true);
@@ -183,225 +196,8 @@ public class RegmovList extends javax.swing.JInternalFrame
     }//GEN-LAST:event_txSearchKeyReleased
 
     private void mnMainExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnMainExportExcelActionPerformed
-    MySQL conn = new MySQL();
-    conn.Create();
-        if(conn.getConnection() == null)
-        {
-            JOptionPane.showMessageDialog(this,
-                "Conexion a Servidor Invalida",
-                "Error Interno",
-                JOptionPane.ERROR_MESSAGE
-                );
-            return;
-        }
-    try 
-    {
-        final JFileChooser fc = new JFileChooser();
-
-        //In response to a button click:
-        String inputFile;
-        //fc.setCurrentDirectory(new File("C:\\Users\\areyes\\Proyectos\\trunk\\src\\Cobranza"));
-        int returnVal = fc.showOpenDialog(this);
-        if(returnVal == JFileChooser.APPROVE_OPTION)
-        {
-            if(fc.getSelectedFile().getAbsolutePath().endsWith("xls"))
-            {
-                inputFile = fc.getSelectedFile().getAbsolutePath();
-            }
-            else
-            {
-                inputFile = fc.getSelectedFile().getAbsolutePath() + ".xls";
-            }           
-        }
-        else
-        {
-            return ;
-        }
-        
-        WritableWorkbook workbook = Workbook.createWorkbook(new File(inputFile));
-        WritableSheet sheet = workbook.createSheet("Page1", 0);
-  
-        String Header[] = new String[14];
-        Header[0] = "Num. Mov.";
-        Header[1] = "Fecha Mov.";
-        Header[2] = "Tipo";
-        Header[3] = "Uso";
-        Header[4] = "SA";
-        Header[5] = "No. Cte.";
-        Header[6] = "Cte.";
-        Header[7] = "Nombre Firma";
-        Header[8] = "No. Eco.";
-        Header[9] = "Marca";
-        Header[10] = "Modelo";
-        Header[11] = "Serie";
-        Header[12] = "Horometro";
-        Header[13] = "Observaciones";
-        
-        //Setting Background colour for Cells
-        Colour bckcolor = Colour.GRAY_25;
-        WritableCellFormat cellFormat = new WritableCellFormat();
-        cellFormat.setBackground(bckcolor);
- 
-        //Setting Colour & Font for the Text
-        WritableFont font = new WritableFont(WritableFont.ARIAL);
-        font.setColour(Colour.BLACK);
-        cellFormat.setFont(font);
-            
-        // Write the Header to the excel file
-        for (int i = 0; i < Header.length; i++) 
-        {
-            jxl.write.Label label = new jxl.write.Label(i, 0, Header[i]);
-            sheet.addCell(label);
-            WritableCell cell = sheet.getWritableCell(i, 0);
-            cell.setCellFormat(cellFormat);
-        }
-            
-        
-        String sql = "SELECT folio,DATE_FORMAT(fhmov,'%d/%m/%Y') as fhmov,tmov,uso,sa,compNumber,compName,firma,numeco,marca,modelo,serie,horometro,note FROM Movements_Resolved";
-        if( getRestric().length()>0)
-        {
-            sql = sql + " WHERE " + getRestric();
-        }
-        Statement tsmt = null;        
-        
-        try 
-        {
-            tsmt = (Statement) conn.getConnection().createStatement();
-            System.out.println(sql);
-            ResultSet rs = tsmt.executeQuery(sql);
-            int rowCount = 0;
-            jxl.write.Label label;
-            while(rs.next())
-            {
-                rowCount++;
-                label = new jxl.write.Label(0, rowCount, rs.getString("folio"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(1, rowCount, rs.getString("fhmov"));
-                sheet.addCell(label);
-                
-                if(rs.getString("tmov").equals("ent"))
-                {
-                    label = new jxl.write.Label(2, rowCount, "Entrada");
-                    sheet.addCell(label);
-                }
-                else if(rs.getString("tmov").equals("sal"))
-                {
-                    label = new jxl.write.Label(2, rowCount, "Salida");
-                    sheet.addCell(label);
-                }
-                else if(rs.getString("tmov").equals("mov"))
-                {
-                    label = new jxl.write.Label(2, rowCount, "Movimiento");
-                    sheet.addCell(label);
-                }
-                else if(rs.getString("tmov").equals("aj"))
-                {
-                    label = new jxl.write.Label(2, rowCount, "Ajuste");
-                    sheet.addCell(label);
-                }
-
-                if(rs.getString("uso").equals("rta"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Renta");
-                    sheet.addCell(label); 
-                }
-                else if(rs.getString("uso").equals("rtacp"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Renta Corto Plazo");
-                    sheet.addCell(label); 
-                }
-                else if(rs.getString("uso").equals("rtaoc"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Renta Opcion de compra");
-                    sheet.addCell(label); 
-                }
-                else if(rs.getString("uso").equals("rep"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Reparacion");
-                    sheet.addCell(label); 
-                }
-                else if(rs.getString("uso").equals("pres"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Prestamo");
-                    sheet.addCell(label); 
-                }
-                else if(rs.getString("uso").equals("vta"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Venta");
-                    sheet.addCell(label); 
-                }
-                else if(rs.getString("uso").equals("mov"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Movimiento");
-                    sheet.addCell(label); 
-                }
-                else if(rs.getString("uso").equals("disp"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Disponible");
-                    sheet.addCell(label); 
-                }
-                else if(rs.getString("uso").equals("baja"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Baja");
-                    sheet.addCell(label); 
-                }
-                else if(rs.getString("uso").equals("corr"))
-                {
-                    label = new jxl.write.Label(3, rowCount,"Cubriendo");
-                    sheet.addCell(label); 
-                }
-                
-                label = new jxl.write.Label(4, rowCount, rs.getString("sa"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(5, rowCount, rs.getString("compNumber"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(6, rowCount, rs.getString("compName"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(7, rowCount, rs.getString("firma"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(8, rowCount, rs.getString("numeco"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(9, rowCount, rs.getString("marca"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(10, rowCount, rs.getString("modelo"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(11, rowCount, rs.getString("serie"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(12, rowCount, rs.getString("horometro"));
-                sheet.addCell(label);
-                
-                label = new jxl.write.Label(13, rowCount, rs.getString("note"));
-                sheet.addCell(label);
-                
-            }
-        } 
-        catch (SQLException ex) 
-        {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        workbook.write();
-        workbook.close();
-    } 
-    catch (WriteException e) 
-    {
-        ;
-    }
-    catch(IOException ioe)
-    {
-        ;
-    }
-    conn.Close();
+        ExportMovs movs = new ExportMovs(null,true,txSearch.getText());
+        movs.show();
     }//GEN-LAST:event_mnMainExportExcelActionPerformed
 
     private void btSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSearchActionPerformed
@@ -432,6 +228,7 @@ public class RegmovList extends javax.swing.JInternalFrame
     private javax.swing.JButton btSearch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private org.jdesktop.swingx.JXTable jXTable1;
