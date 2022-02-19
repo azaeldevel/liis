@@ -1337,8 +1337,10 @@ public class LoteGrua
                 continue;
             }
             //System.out.println("");
-            
-            strUso = getStringUso(row.get(15));
+            strUso = "";
+            System.out.println(" T : " + strTitem);
+            System.out.println(" Z : " + row.size());
+            if(row.size() >= 16) strUso = getStringUso(row.get(15));            
             uso = new Uso(-1);
             //System.out.println("uso = '" + row.get(15) + "'");
             if(!strUso.isEmpty() && !strUso.isBlank())

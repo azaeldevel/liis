@@ -2,14 +2,14 @@
 <!-- This is a comment -->
 <configuration>
 	<mysql>
-		<host>192.168.1.200</host>
+		<host>192.168.0.103</host>
 		<port>3306</port>
 		<user>develop</user>
 		<code>956A-981GLP97</code>
-		<database>DBSSIILa</database>
+		<database>dbssiil</database>
 	</mysql>
 	<speech>
-		<host>192.168.1.201</host>
+		<host>192.168.0.103</host>
 		<port>35557</port>
 	</speech>
 	<ftp>

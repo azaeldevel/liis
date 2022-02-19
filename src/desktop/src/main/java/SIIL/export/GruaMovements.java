@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -26,9 +27,16 @@ public class GruaMovements
     
     public void generate(File file,Database dbserver) throws SQLException, IOException, Exception
     {
+        String ext = FilenameUtils.getExtension(file.getAbsolutePath().toString());
+        String filename = file.getAbsolutePath();
+        if(ext.isEmpty())
+        {
+            filename = file.getAbsolutePath() + ".csv";
+        }
+        FileWriter csv = new FileWriter(filename);
+        
         List<Movements> ls = new ArrayList<>();        
-        Movements.list(dbserver, ls, null, " id desc ", 0);         
-        FileWriter csv = new FileWriter(file.getAbsolutePath());
+        Movements.list(dbserver, ls, null, " id desc ", 0);    
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         List<Movitems> items;        
         Battery battery;
@@ -110,7 +118,11 @@ public class GruaMovements
                 {
                     csv.write(battery.getNumber());
                 }
-                else if(charger != null)
+            }
+            csv.write(",");            
+            if(forklift == null)
+            {
+                if(charger != null)
                 {
                     csv.write(charger.getNumber());
                 }

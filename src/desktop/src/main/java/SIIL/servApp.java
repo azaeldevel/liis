@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.io.FilenameUtils;
 import org.xml.sax.SAXException;
 import process.ImportsCN;
 
@@ -1949,8 +1950,7 @@ public class servApp extends javax.swing.JFrame implements Runnable
         {
             Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage());
-        }
-        
+        }        
            
         try 
         {
@@ -2015,7 +2015,8 @@ public class servApp extends javax.swing.JFrame implements Runnable
         if (userSelection == JFileChooser.APPROVE_OPTION) 
         {
             File fileToSave = fileChooser.getSelectedFile();
-            System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+            //System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+
             try 
             {
                 export.generate(fileToSave,dbserver);

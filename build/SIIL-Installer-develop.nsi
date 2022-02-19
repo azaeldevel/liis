@@ -14,7 +14,7 @@
 !insertmacro VersionCompare
 
 Name "${NAME}"
-OutFile "vers\Installer-${NAME}-${VERSION}.exe"
+OutFile "vers\Installer-${NAME}-${VERSION}-develop.exe"
 RequestExecutionLevel admin
 ;XPStyle on
 SetCompressor bzip2
@@ -43,12 +43,12 @@ LangString Uninstall ${LANG_SPANISH} "Desintaldor"
 Section
   SetOutPath $INSTDIR\
   
-  File src\release\desk.jar
-  File src\release\config.jaas
-  File src\release\deploy.xml
-  File src\release\server.xml
-  File src\release\server.xsd
-  File src\release\tool.ico
+  File src\alpha\desk.jar
+  File src\alpha\config.jaas
+  File src\alpha\deploy.xml
+  File src\alpha\server.xml
+  File src\alpha\server.xsd
+  File src\alpha\tool.ico
   
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   
