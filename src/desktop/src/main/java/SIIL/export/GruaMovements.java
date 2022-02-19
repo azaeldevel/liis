@@ -24,19 +24,44 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class GruaMovements 
 {
+    private List<Movements> ls;
+    private Database dbserver;
+    private int progress;
+    private FileWriter csv;
+    private String actual;
     
-    public void generate(File file,Database dbserver) throws SQLException, IOException, Exception
+    public int getProgress()
     {
+        return progress;
+    }
+    public int getSize()
+    {
+        return ls.size();
+    }
+    public String getActual()
+    {
+        return actual;
+    }
+    
+    GruaMovements(Database server,File file) throws SQLException, IOException
+    {
+        progress = 0;
+        dbserver = server;
+        ls = new ArrayList<>();        
+        Movements.list(dbserver, ls, null, " id desc ", 0);
+        
+        
         String ext = FilenameUtils.getExtension(file.getAbsolutePath().toString());
         String filename = file.getAbsolutePath();
         if(ext.isEmpty())
         {
             filename = file.getAbsolutePath() + ".csv";
         }
-        FileWriter csv = new FileWriter(filename);
-        
-        List<Movements> ls = new ArrayList<>();        
-        Movements.list(dbserver, ls, null, " id desc ", 0);    
+        csv = new FileWriter(filename);
+    } 
+    
+    public void generate() throws SQLException, IOException, Exception
+    {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         List<Movitems> items;        
         Battery battery;
@@ -54,6 +79,7 @@ public class GruaMovements
             for(Movitems item : items)
             {
                 item.download(dbserver);
+                actual = item.getNumber();
                 switch(Titem.checkType(item.getNumber()))
                 {
                     case FORKLIFT:
@@ -132,7 +158,7 @@ public class GruaMovements
             csv.write(",");
             mov.getTmov();
             csv.write("\n");
-            //System.out.println("id = " + mov.getID());
+            progress++;
         }
         
         csv.close();

@@ -6,12 +6,14 @@ import SIIL.Servicios.Orden.Read;
 import SIIL.client.sales.Enterprise;
 import session.User;
 import SIIL.desktop.auth.ToolLoginModule;
+import SIIL.export.ExportMovs;
 import SIIL.export.GruaMovements;
 import SIIL.imports.LoteGrua;
 import SIIL.services.grua.Resumov;
 import SIIL.sockets.messages.ClosedApplication;
 import SIIL.tools.ScreenLogger;
 import com.galaxies.andromeda.util.Texting.Message;
+import com.mysql.cj.protocol.ExportControlled;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
@@ -1994,41 +1996,8 @@ public class servApp extends javax.swing.JFrame implements Runnable
     }//GEN-LAST:event_mnLoteGruaActionPerformed
 
     private void mnMainExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnMainExportActionPerformed
-        SIIL.core.config.Server serverConfig = new SIIL.core.config.Server();        
-        Database dbserver = null;
-        try 
-        {
-            serverConfig.loadFile(new java.io.File(".").getCanonicalPath());
-            dbserver = new Database(serverConfig);
-        }
-        catch (ClassNotFoundException | SQLException | IOException | ParserConfigurationException | SAXException ex) 
-        {
-            Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null,ex.getMessage());
-            return;
-        }
-        
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Specify a file to save");   
-        GruaMovements export = new GruaMovements();
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection == JFileChooser.APPROVE_OPTION) 
-        {
-            File fileToSave = fileChooser.getSelectedFile();
-            //System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-
-            try 
-            {
-                export.generate(fileToSave,dbserver);
-            } 
-            catch (SQLException | IOException ex) 
-            {
-                Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JOptionPane.showMessageDialog(this,"Datos guardados.");
-        }
+        ExportMovs movs = new ExportMovs(this,true);
+        movs.show();
     }//GEN-LAST:event_mnMainExportActionPerformed
 
     /**
