@@ -24,6 +24,8 @@ public class ExportMovs extends javax.swing.JDialog {
 
     private GruaMovements export;
     private String clause;
+    private Thread thread_export;
+    private Thread thread_prog;
     
     /**
      * Creates new form ExportMovs
@@ -37,7 +39,11 @@ public class ExportMovs extends javax.swing.JDialog {
         initComponents();       
         this.clause = clause;
     }
-
+    boolean getTerminate()
+    {
+        return export.getTerminate();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,6 +70,11 @@ public class ExportMovs extends javax.swing.JDialog {
         });
 
         btCancel.setText("Cancelar");
+        btCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,7 +136,7 @@ public class ExportMovs extends javax.swing.JDialog {
         export = null;
         try 
         {
-            if(clause.isEmpty()) export = new GruaMovements(dbserver,fileToSave,null);
+            if(clause == null) export = new GruaMovements(dbserver,fileToSave);
             else export = new GruaMovements(dbserver,fileToSave,clause);
         } 
         catch (SQLException | IOException ex) 
@@ -135,13 +146,18 @@ public class ExportMovs extends javax.swing.JDialog {
         progress.setMaximum(export.getSize());
         
         Runnable export_Thread = () -> { exporting(); };
-        Thread thread_export = new Thread(export_Thread);
+        thread_export = new Thread(export_Thread);
         thread_export.start();
         
         Runnable progress_Thread = () -> { loop(); };
-        Thread thread_prog = new Thread(progress_Thread);
+        thread_prog = new Thread(progress_Thread);
         thread_prog.start();
     }//GEN-LAST:event_btExportActionPerformed
+
+    private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
+        export.terminate_generation();
+        dispose();
+    }//GEN-LAST:event_btCancelActionPerformed
 
     public void loop()
     {
@@ -174,7 +190,7 @@ public class ExportMovs extends javax.swing.JDialog {
         {
             Logger.getLogger(servApp.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JOptionPane.showMessageDialog(this,"Datos guardados.");
+        if(!export.getTerminate()) JOptionPane.showMessageDialog(this,"Datos guardados.");
     }
     
     /**

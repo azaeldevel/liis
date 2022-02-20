@@ -602,7 +602,7 @@ public class MovementsTest
         
         Database connection = null;
         List<Movements> ls = new ArrayList<>();
-        Movements.list(dbserver, ls, null, " id desc ", 0);        
+        Movements.list(dbserver, ls, null, " id desc ", 0,Movements.MYSQL_AVATAR_TABLE);        
         for (Movements mov : ls) 
         {
             System.out.println("id = " + mov.getID());

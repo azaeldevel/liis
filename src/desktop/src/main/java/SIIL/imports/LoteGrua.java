@@ -182,7 +182,7 @@ public class LoteGrua
             titem = null;
             if(row.size() < 5) continue;
             strTitem = row.get(5);
-            if(strTitem.isEmpty() || strTitem.isBlank()) continue;
+            if(strTitem.isEmpty()) continue;
             if(Titem.isExist(dbserver, strTitem) <= 0)
             {
                 switch(Titem.checkType(strTitem))
@@ -212,7 +212,7 @@ public class LoteGrua
                 }
 
                 strMarca = row.get(6);
-                if(strMarca.isEmpty() || strMarca.isBlank()) continue;                
+                if(strMarca.isEmpty()) continue;                
                 ret = titem.upMake(dbserver.getConnection(), strMarca);
                 if(ret.isFail()) 
                 {
@@ -221,7 +221,7 @@ public class LoteGrua
                 }
 
                 strModel = row.get(7);
-                if(strModel.isEmpty() || strModel.isBlank()) continue;            
+                if(strModel.isEmpty()) continue;            
                 ret = titem.upModel(dbserver.getConnection(), strModel);
                 if(ret.isFail()) 
                 {
@@ -230,7 +230,7 @@ public class LoteGrua
                 }
                 
                 strSerie = row.get(8);
-                if(strSerie.isEmpty() || strSerie.isBlank()) continue;
+                if(strSerie.isEmpty()) continue;
                 ret = titem.upSerie(dbserver.getConnection(), strSerie);
                 if(ret.isFail()) 
                 {
@@ -292,7 +292,7 @@ public class LoteGrua
             if(result.get(i).size() >= 3)
             {
                 strClient = result.get(i).get(2).trim();
-                if(!strClient.isEmpty() && !strClient.isBlank())
+                if(!strClient.isEmpty())
                 {
                     enterprisies = search(result.get(i).get(2).trim());
                     if(enterprisies.size() != 1)
@@ -311,7 +311,7 @@ public class LoteGrua
             if(result.get(i).size() >= 5)        
             {
                 strTitem = result.get(i).get(5).trim();
-                if(strTitem.isEmpty() || strTitem.isBlank()) 
+                if(strTitem.isEmpty()) 
                 {
                     System.out.println("No hay datos en el campo de equipo : " + (i + 1));
                     counFails++;
@@ -386,7 +386,7 @@ public class LoteGrua
                 continue;                
             }
             strTitem = row.get(5).trim();
-            if(strTitem.isEmpty() || strTitem.isBlank()) 
+            if(strTitem.isEmpty()) 
             {
                 counFailsResults++;
                 continue;                
@@ -437,7 +437,7 @@ public class LoteGrua
                 if(row.size() >= 5)
                 {
                     strBattery = row.get(5).trim();
-                    if(!strBattery.isEmpty() && !strBattery.isBlank())
+                    if(!strBattery.isEmpty())
                     {
                         battery = new Battery(-1);
                         ret = battery.search(dbserver.getConnection(), strBattery);
@@ -470,7 +470,7 @@ public class LoteGrua
             {
                 if(row.size() >= 5)
                 {
-                    if(!row.get(5).isEmpty() && !row.get(5).isBlank())
+                    if(!row.get(5).isEmpty())
                     {
                         charger = new Charger(-1);
                         ret = charger.search(dbserver.getConnection(), row.get(5).trim());
@@ -579,7 +579,7 @@ public class LoteGrua
                 {
                     strTitemBaterry = row.get(9).trim();
                     type = Titem.checkType(strTitemBaterry);
-                    if(!strTitemBaterry.isEmpty() && !strTitemBaterry.isBlank() && type != Titem.Type.UNKNOW)
+                    if(!strTitemBaterry.isEmpty() && type != Titem.Type.UNKNOW)
                     {
                         if(type == Titem.Type.BATTERY)
                         {
@@ -611,7 +611,7 @@ public class LoteGrua
                 {
                     strTitemCharger = row.get(10).trim();
                     type = Titem.checkType(strTitemCharger);
-                    if(!strTitemCharger.isEmpty() && !strTitemCharger.isBlank() && type != Titem.Type.UNKNOW)
+                    if(!strTitemCharger.isEmpty() && type != Titem.Type.UNKNOW)
                     {
                         if(type == Titem.Type.CHARGER)
                         {
@@ -645,7 +645,7 @@ public class LoteGrua
             {
                 mov = new Movements(-1);
                 office = new Office(dbserver,1);
-                strFolio = (row.get(0).isEmpty() || row.get(0).isBlank()) ?  "0" : row.get(1);
+                strFolio = (row.get(0).isEmpty()) ?  "0" : row.get(1);
                 ret = mov.insert(dbserver, office, date, strFolio, titems);
                 mov.upImported(dbserver, true);
                 /*
@@ -667,7 +667,7 @@ public class LoteGrua
                 */
                 if(row.size() <= 15) continue;
                 strUso = getStringUso(row.get(15));
-                if(!strUso.isEmpty() && !strUso.isBlank() )
+                if(!strUso.isEmpty())
                 {
                     uso = new Uso(-1);
                     if(uso.selectCode(dbserver,strUso))
@@ -685,14 +685,14 @@ public class LoteGrua
                 if(row.size() >= 14)
                 {
                     strNote = row.get(13);
-                    if(!strNote.isBlank() && !strNote.isEmpty())
+                    if(!strNote.isEmpty())
                     {
                         mov.upNote(dbserver.getConnection(), strNote);
                     }
                     else if(row.size() >= 17)
                     {
                         strNote = row.get(16);
-                        if(!strNote.isBlank() && !strNote.isEmpty())
+                        if(!strNote.isEmpty())
                         {
                             mov.upNote(dbserver.getConnection(), strNote);
                         }
@@ -765,7 +765,7 @@ public class LoteGrua
     
     Date convertDate(String strDate)
     {
-        if(strDate.isEmpty() || strDate.isBlank()) return new Date();
+        if(strDate.isEmpty()) return new Date();
         
         Date date;
         
@@ -1091,13 +1091,13 @@ public class LoteGrua
             
             if(row.size() < 5) continue;
             strTitem = row.get(5).trim();
-            if(strTitem.isEmpty() || strTitem.isBlank()) continue;
+            if(strTitem.isEmpty()) continue;
             type = Titem.checkType(strTitem.trim());
             if(type == Titem.Type.UNKNOW) continue;
             
             if(type == Titem.Type.FORKLIFT)
             {
-                if(!strTitem.isEmpty() && !strTitem.isBlank())
+                if(!strTitem.isEmpty())
                 {
                     forklift = new Forklift(-1);
                     ret = forklift.searchForklift(dbserver, strTitem);
@@ -1125,7 +1125,7 @@ public class LoteGrua
             {
                 if(row.size() >= 5)
                 {
-                    if(!strTitem.isEmpty() && !strTitem.isBlank())
+                    if(!strTitem.isEmpty())
                     {
                         battery = new Battery(-1);
                         ret = battery.search(dbserver.getConnection(), strTitem);
@@ -1158,7 +1158,7 @@ public class LoteGrua
             {
                 if(row.size() >= 5)
                 {
-                    if(!strTitem.isEmpty() && !strTitem.isBlank())
+                    if(!strTitem.isEmpty())
                     {
                         charger = new Charger(-1);
                         ret = charger.search(dbserver.getConnection(), strTitem.trim());
@@ -1211,7 +1211,7 @@ public class LoteGrua
                 if(row.size() >= 5)
                 {
                     type = Titem.checkType(strTitem);
-                    if(!strTitem.isEmpty() && !strTitem.isBlank() && type != Titem.Type.UNKNOW)
+                    if(!strTitem.isEmpty() && type != Titem.Type.UNKNOW)
                     {
                         if(type == Titem.Type.FORKLIFT)
                         {
@@ -1269,7 +1269,7 @@ public class LoteGrua
                 {
                     strBattery = row.get(9).trim();
                     type = Titem.checkType(strBattery);
-                    if(!strBattery.isEmpty() && !strBattery.isBlank() && type == Titem.Type.BATTERY)
+                    if(!strBattery.isEmpty() && type == Titem.Type.BATTERY)
                     {
                         //System.out.print(", B : '" + strTitemBaterry + "'");
                             battery = new Battery(-1);
@@ -1301,7 +1301,7 @@ public class LoteGrua
                 {
                     strTitemCharger = row.get(10).trim();
                     type = Titem.checkType(strTitemCharger);
-                    if(!strTitemCharger.isEmpty() && !strTitemCharger.isBlank() && type != Titem.Type.UNKNOW)
+                    if(!strTitemCharger.isEmpty() && type != Titem.Type.UNKNOW)
                     {
                         //System.out.println(", C : '" + strTitemCharger + "'");
                         if(type == Titem.Type.CHARGER)
@@ -1343,7 +1343,7 @@ public class LoteGrua
             if(row.size() >= 16) strUso = getStringUso(row.get(15));            
             uso = new Uso(-1);
             //System.out.println("uso = '" + row.get(15) + "'");
-            if(!strUso.isEmpty() && !strUso.isBlank())
+            if(!strUso.isEmpty())
             {
                 if(uso.selectCode(dbserver,strUso))
                 {                    
@@ -1392,14 +1392,14 @@ public class LoteGrua
             if(row.size() >= 14)
             {
                 strNote = row.get(13);
-                if(!strNote.isBlank() && !strNote.isEmpty())
+                if(!strNote.isEmpty())
                 {
                     resumov.upNote(dbserver.getConnection(), strNote,null);
                 }
                 else if(row.size() >= 17)
                 {
                     strNote = row.get(16);
-                    if(!strNote.isBlank() && !strNote.isEmpty())
+                    if(!strNote.isEmpty())
                     {
                         resumov.upNote(dbserver.getConnection(), strNote,null);
                     }

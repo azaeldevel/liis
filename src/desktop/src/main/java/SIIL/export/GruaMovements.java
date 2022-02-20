@@ -29,6 +29,8 @@ public class GruaMovements
     private int progress;
     private FileWriter csv;
     private String actual;
+    private String table;
+    private boolean terminte;
     
     public int getProgress()
     {
@@ -42,14 +44,21 @@ public class GruaMovements
     {
         return actual;
     }
+    public void terminate_generation()
+    {
+        terminte = true;
+    }
+    boolean getTerminate()
+    {
+        return terminte;
+    }
     
-    GruaMovements(Database server,File file,String clause) throws SQLException, IOException
+    GruaMovements(Database server,File file) throws SQLException, IOException
     {
         progress = 0;
         dbserver = server;
         ls = new ArrayList<>();        
-        Movements.list(dbserver, ls, clause, " id desc ", 0);
-                
+        Movements.list(dbserver, ls, null, " id desc ", 0,Movements.MYSQL_AVATAR_TABLE);                
         String ext = FilenameUtils.getExtension(file.getAbsolutePath().toString());
         String filename = file.getAbsolutePath();
         if(ext.isEmpty())
@@ -57,8 +66,26 @@ public class GruaMovements
             filename = file.getAbsolutePath() + ".csv";
         }
         csv = new FileWriter(filename);
+        terminte = false;
     } 
     
+    GruaMovements(Database server,File file,String clause) throws SQLException, IOException
+    {
+        progress = 0;
+        dbserver = server;
+        ls = new ArrayList<>();  
+        String where = " numeco LIKE '%" + clause + "%' OR modelo LIKE '%" + clause + "%' OR serie LIKE '%" + clause + "%' OR compName LIKE '%" + clause + "%' OR folio LIKE '%" + clause + "%'";
+        Movements.list(dbserver, ls, where, " id desc ", 0,Movements.MYSQL_AVATAR_TABLE + "_Resolved");                
+        String ext = FilenameUtils.getExtension(file.getAbsolutePath().toString());
+        String filename = file.getAbsolutePath();
+        if(ext.isEmpty())
+        {
+            filename = file.getAbsolutePath() + ".csv";
+        }
+        csv = new FileWriter(filename);
+        terminte = false;
+    }
+        
     public void generate() throws SQLException, IOException, Exception
     {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -68,13 +95,14 @@ public class GruaMovements
         Forklift forklift;
         for(Movements mov : ls)
         {
+            if(terminte) return;
             forklift = null;
             charger = null;
             battery = null;            
             mov.downloadExport(dbserver);
-            System.out.println("Movement : " + mov.getID());
+            //System.out.println("Movement : " + mov.getID());
             items = Movitems.select(dbserver,mov);  
-            System.out.println("Items count : " + items.size());
+            //System.out.println("Items count : " + items.size());
             for(Movitems item : items)
             {
                 item.download(dbserver);
@@ -87,7 +115,7 @@ public class GruaMovements
                         forklift.searchForklift(dbserver, item.getNumber());
                         if(!forklift.download(dbserver)) 
                         {
-                            System.out.println("No se encontro item ID : " + item.getID());
+                            //System.out.println("No se encontro item ID : " + item.getID());
                             forklift = null;
                         }
                         break;
@@ -98,7 +126,7 @@ public class GruaMovements
                         battery.search(dbserver, item.getNumber());
                         if(!battery.download(dbserver))
                         {
-                            System.out.println("No se encontro item ID : " + item.getID());
+                            //System.out.println("No se encontro item ID : " + item.getID());
                             battery = null;
                         }
                         break;
@@ -109,7 +137,7 @@ public class GruaMovements
                         charger.search(dbserver, item.getNumber());
                         if(!charger.download(dbserver))
                         {
-                            System.out.println("No se encontro item ID : " + item.getID());
+                            //System.out.println("No se encontro item ID : " + item.getID());
                             charger = null;
                         }
                         break;

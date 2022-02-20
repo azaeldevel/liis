@@ -383,7 +383,7 @@ public class Titem extends Item
     
     public static Type checkType(String titem) throws SQLException
     {        
-        if(titem.isEmpty() || titem.isBlank())
+        if(titem.isEmpty())
         {
             return Type.UNKNOW;
         }

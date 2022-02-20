@@ -2,7 +2,7 @@
 
 !define NAME "SIIL"
 !define JAR "desk.jar"
-!define VERSION "29.12.2"
+!define VERSION "29.13.2"
 !define PUBLISHER "Azael Reyes"
 !define WEBSITE "http://siil.com/"
 !define JRE_URL "http://siil.com"

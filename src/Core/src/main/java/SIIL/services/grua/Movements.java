@@ -30,7 +30,7 @@ import stock.Flow;
  */
 public class Movements implements Searchable
 {
-    private static final String MYSQL_AVATAR_TABLE = "Movements";
+    public static final String MYSQL_AVATAR_TABLE = "Movements";
     private static final String MYSQL_AVATAR_TABLE_BACKWARD_BD = "bc.tj";
     
     private int id;
@@ -67,17 +67,15 @@ public class Movements implements Searchable
      * @param limit para un numero positivo selecciona la cantidad indicada, de otra forma selecciona la tabla completa. 
      * @throws SQLException 
      */
-    static public void list(Database connection, List<Movements> ls, String where, String order, int limit) throws SQLException
+    static public void list(Database connection, List<Movements> ls, String where, String order, int limit,String table) throws SQLException
     {
         if(connection == null) throw new InvalidParameterException("Connection is null.");
         
-        String sql = "SELECT id FROM " + MYSQL_AVATAR_TABLE ;
+        String sql = "SELECT id FROM " + table ;
         if(where != null) sql += " WHERE " + where;
         if(order != null) sql += " ORDER BY " + order;
-        if(limit > 0) sql += " LIMIT " + limit;
-        
-        System.out.println(sql);
-        
+        if(limit > 0) sql += " LIMIT " + limit;        
+        System.out.println(sql);        
         Statement stmt = connection.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         Movements mov;

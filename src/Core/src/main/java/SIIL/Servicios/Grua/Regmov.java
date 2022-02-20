@@ -239,7 +239,7 @@ public class Regmov
             {
                 SQL = SQL + restrict; 
             }
-            System.out.println(SQL);
+            //System.out.println(SQL);
             ResultSet rs = stmt.executeQuery(SQL);
             Object[] row;
             while(rs.next())
